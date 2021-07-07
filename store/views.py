@@ -132,8 +132,8 @@ def login_otp(request):
         if Account.objects.filter(phone_number=phone).exists():
             otp = random.randint(100000,999999)
             strotp=str(otp)
-            account_sid ='ACca48f33a1a36f7da7d530b7397521bde'
-            auth_token ='df525d6f373b3ac76820539225e241ca'
+            account_sid ='A'
+            auth_token ='d'
             client = Client(account_sid, auth_token)
 
             message = client.messages \
