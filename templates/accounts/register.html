@@ -1,0 +1,118 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+
+
+ <!--====== App Content ======-->
+ <div class="app-content">
+
+    <!--====== Section 1 ======-->
+    <div class="u-s-p-y-60">
+
+        <!--====== Section Content ======-->
+        <div class="section__content">
+            <div class="container">
+                <div class="breadcrumb">
+                    <div class="breadcrumb__wrap">
+                        <ul class="breadcrumb__list">
+                            <li class="has-separator">
+
+                                <a href="{% url 'home' %}">Home</a></li>
+                            <li class="is-marked">
+
+                                <a href="">Signup</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--====== End - Section 1 ======-->
+
+
+    <!--====== Section 2 ======-->
+    <div class="u-s-p-b-60">
+
+        <!--====== Section Intro ======-->
+        <div class="section__intro u-s-m-b-60">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section__text-wrap">
+                            <h1 class="section__heading u-c-secondary">CREATE AN ACCOUNT</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--====== End - Section Intro ======-->
+
+
+        <!--====== Section Content ======-->
+        <div class="section__content">
+            <div class="container">
+                <div class="row row--center">
+                    <div class="col-lg-6 col-md-8 u-s-m-b-30">
+                        <div class="l-f-o">
+                            <div class="l-f-o__pad-box">
+                                <h1 class="gl-h1">PERSONAL INFORMATION</h1>
+                                <form class="l-f-o__form"  action="{% url 'signup' %}" method="post" >
+                                    {% csrf_token %}
+
+
+                                    <div class="u-s-m-b-30">
+
+                                        <label class="gl-label" for="reg-fname">FIRST NAME *</label>
+
+                                        <input class="input-text input-text--primary-style" type="text" name="first_name" id="reg-fname" placeholder="First Name" required></div>
+                                    <div class="u-s-m-b-30">
+
+                                        <label class="gl-label" for="reg-lname">LAST NAME *</label>
+
+                                        <input class="input-text input-text--primary-style" type="text" name= "last_name"  id="reg-lname" placeholder="Last Name" required></div>
+                                   
+                                    <div class="u-s-m-b-30">
+
+                                        <label class="gl-label" for="reg-email">E-MAIL *</label>
+
+                                        <input class="input-text input-text--primary-style" type="text" name= "email" id="reg-email" placeholder="Enter E-mail" required></div>
+                                    <div class="u-s-m-b-30">
+
+                                        <label class="gl-label" for="reg-email">PHONE NUMBER *</label>
+
+                                        <input class="input-text input-text--primary-style" type="text" name= "phone_number" id="reg-email" placeholder="Enter Phone Number" required></div>
+                                    <div class="u-s-m-b-30">
+
+                                        <label class="gl-label" for="reg-password">PASSWORD *</label>
+
+                                        <input class="input-text input-text--primary-style" type="text" name= "password" id="reg-password" placeholder="Enter Password" required></div>
+                                    <div class="u-s-m-b-30">
+
+                                        <label class="gl-label" for="reg-password">CONFIRM PASSWORD *</label>
+
+                                        <input class="input-text input-text--primary-style" type="text" name= "confirm_password" id="reg-password" placeholder="Confirm Password" required></div>
+
+                                        {% for message in messages %}
+                                        <p style="color:red">{{message}}</p>
+                                        {% endfor %}
+
+                                    <div class="u-s-m-b-15">
+
+                                        <button class="btn btn--e-transparent-brand-b-2" type="submit">CREATE</button></div>
+
+                                        <p >Have an account? <a class="gl-link" href=" {% url 'login' %}">Sign In</a></p>
+                                    <!-- <a class="gl-link" href="#">Return to Store</a> -->
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--====== End - Section Content ======-->
+    </div>
+    <!--====== End - Section 2 ======-->
+</div>
+<!--====== End - App Content ======-->
+
+    {% endblock content %}
