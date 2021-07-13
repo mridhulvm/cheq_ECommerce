@@ -136,8 +136,8 @@ def login_otp(request):
         if Account.objects.filter(phone_number=phone).exists():
             otp = random.randint(100000,999999)
             strotp=str(otp)
-            account_sid ='ACca48f33a1a36f7da7d530b7397521bde'
-            auth_token ='df525d6f373b3ac76820539225e241ca'
+            account_sid ='A'
+            auth_token ='d'
             client = Client(account_sid, auth_token)
 
             message = client.messages \
@@ -263,6 +263,7 @@ def editAccountDetails(request):
         pro_pic_instance.save()  
 
     if request.method == 'POST':
+<<<<<<< HEAD
 
         current_user = request.user
         account_instance = Account()
@@ -354,3 +355,6 @@ def orderDetail(request,id):
     "ordered_product" : ordered_product
     }
     return render (request,'store/orderDetail.html',context)   
+=======
+        pass
+>>>>>>> 9b4781074b8eb4a8ada9a794c2b732fc60a439f9
