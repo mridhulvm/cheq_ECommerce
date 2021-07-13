@@ -4,6 +4,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from product.models import Product
 from .models import CartItem,Cart
 from django.contrib.auth.decorators import login_required
+
+from django.http import HttpResponseRedirect  #for   META['HTTP_REFERER']
 # Create your views here.
 
 def _cart_id(request):
@@ -17,6 +19,8 @@ def add_cart(request, product_id):
     print("add cart")
     current_user = request.user
     product = Product.objects.get(id=product_id) #get the product
+    if product.stock <1 :
+        return redirect(request.META['HTTP_REFERER'])
 
     #if user is authenticated
     if current_user.is_authenticated:
@@ -33,7 +37,7 @@ def add_cart(request, product_id):
                 user = current_user,
             )
             cart_item.save()
-        return redirect('cart')
+        return redirect(request.META['HTTP_REFERER'])
     
 
     #if user is not autheticated
@@ -58,7 +62,7 @@ def add_cart(request, product_id):
                 cart = cart,
             )
             cart_item.save()
-        return redirect('cart')
+        return redirect(request.META['HTTP_REFERER'])
 
 def minus_cart(request,product_id):
     current_user = request.user

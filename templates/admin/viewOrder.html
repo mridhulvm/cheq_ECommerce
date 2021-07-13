@@ -11,19 +11,12 @@
         <div class="table-responsive">
           <table class="table table-hover">
             <thead>
-              <tr>
-                
-                
-                
-                
-                
-                
-                
-                    
-                  
+              <tr>                                                                                                                            
                 <th>SL.no</th>
                 <th>User</th>
                 <th>Product</th>
+                <th>Product Price</th>
+                <!-- <th>Product Amount</th> -->
                 <th>Order Amount </th>
                 <th>Payment</th>
                 <th>Quantity</th>
@@ -37,6 +30,8 @@
                 <td>{{forloop.counter}}</td>
                 <td>{{ order.user.first_name }} {{ order.user.last_name }} </td>
                 <td>{{ order.product }}</td>
+                <td>{{order.product.price}}</td>
+                <!-- <td>{{order.product.price}}*{{ order.quantity }}</td> -->
                 <td>{{ order.order.order_total }}</td>
                 <td>{{ order.payment.payment_method }}</td>
                 <td>{{ order.quantity }}</td>
@@ -48,10 +43,10 @@
 
                        <select name="status" id="cars" class="btn btn-success selectpicker">
                         <option value="none" selected disabled hidden>{{order.status}}</option>
-                         <option value="ordered">Ordered</option>
-                         <option value="dispatched">Dispatched</option>
-                         <option value="cancelled">Cancelled</option>
-                         <option value="delivered">Delivered</option>
+                         <option value="Ordered">Ordered</option>
+                         <option value="Dispatched">Dispatched</option>
+                         <option value="Cancelled">Cancelled</option>
+                         <option value="Delivered">Delivered</option>
                        </select>
                        <input type="submit" class="btn btn-success" value="Update">
                      </form>

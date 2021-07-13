@@ -70,6 +70,7 @@ class Account(AbstractUser):
 
 class UserAddress(models.Model):
     user=models.ForeignKey(Account,on_delete=models.CASCADE)  
+    address_name=models.CharField(max_length=50,blank=True)
     first_name=models.CharField(max_length=50)
     last_name=models.CharField(max_length=50)
     phone=models.IntegerField(max_length=10)

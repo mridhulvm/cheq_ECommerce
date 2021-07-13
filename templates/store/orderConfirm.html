@@ -27,7 +27,11 @@
         </div>
     </div>
     <!--====== End - Section 1 ======-->
-
+    <div class="u-s-m-b-30">
+        {% for message in messages %}
+        <p style="color: green;">{{message}}</p>
+        {% endfor %}
+        </div>
 
 
 
@@ -113,14 +117,8 @@
             </div>
             <div class="card-body">
               
-            
-            {% if payment == 'COD' %}
-              <h5 >Cash On Delivery</h5>
-
-            {% else %}
-            <h5 >Paypal</h5>
-
-            {% endif %}
+            <h5>{{payment}}</h5>
+          
              </div>
           </div>
         
@@ -141,7 +139,7 @@
                         </thead>
                         <tbody>
                         
-                            {% for cart_item in cart_items %}
+                            {% for cart_item in ordered_product %}
                         <tr>
                             <td>
                                 <figure class="itemside align-items-center">
@@ -196,6 +194,10 @@
                                     <td>GRAND TOTAL</td>
                                     <td>₹{{grand_total}}</td>
                                 </tr>
+                                <tr>
+                                    <td>GRAND TOTAL IN $</td>
+                                    <td>${{dollar_total}}</td>
+                                </tr>                                
                             </tbody>
                         </table>
                         
@@ -203,7 +205,7 @@
                         </table>
                 
                 
-                    <a href="{% url 'home' %}" class="btn btn-light btn-block">Continue Shopping</a>
+                    <a href="{% url 'home' %}" class="btn btn-light btn-block" style="background: #ff4500;">Continue Shopping</a>
         
                 
                 <br>

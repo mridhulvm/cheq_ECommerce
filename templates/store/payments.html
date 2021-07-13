@@ -105,7 +105,7 @@
         
         </div>
         
-
+<!---------------------------------------------------------------------------------------------------------------PAYMENT OPTION-->
         </div> <!-- card.// -->
         <div class="card">
             <div class="card-header font-weight-bold">
@@ -118,17 +118,37 @@
 
               <h5 >Cash On Delivery</h5>
 
-            <input type="radio" id="cash_on_delivery" name="cash_on_delivery" value="cash_on_delivery">
-            <label for="html">Cash On Delivery</label><br>    
-            <h5 >Paypal</h5>
+            <input type="radio" id="cash_on_delivery" name="payment-option" value="cash_on_delivery">
+            <label for="html">Cash On Delivery</label>
+            <hr>  
 
-            <input type="radio" id="paypal" name="paypal" value="paypal">
-            <label for="html">Paypal</label><br>   
+
+            <h5 >Paypal</h5>
+            <label>
+                <input type="radio" name="payment-option" value="paypal" checked>
+                <img src="{% static 'store/payments/paypal_mark.jpg' %}" alt="Pay with Paypal">
+            </label>
+            <hr>
+
+            <h5 >Razorpay</h5>
+            <label>
+                <input type="radio" name="payment-option" value="razorpay" checked>
+                <img src="{% static 'store/payments/razorpay.png' %}" alt="Pay with razorpay" style="height: 70px;">
+
+            </label>  
+            <hr>
+
+            <h5 >Card</h5>
+            <label>
+                <input type="radio" name="payment-option" value="card">
+                <img src="{% static 'store/payments/card_mark.pn' %}" alt="Accepting Visa, Mastercard, Discover and American Express">
+            </label>
 
              </div>
           </div>
         
-            </aside> <!-- col.// -->
+            </aside>
+<!----------------------------------------------------------------------------------------------------------------PRODUCT DETAILS -->
             <aside class="col-lg-6">
         
                 <div class="card">
@@ -200,13 +220,41 @@
                                     <td>GRAND TOTAL</td>
                                     <td>₹{{grand_total}}</td>
                                 </tr>
+                                <tr>
+                                    <td>GRAND TOTAL IN $</td>
+                                    <td>${{dollar_total}}</td>
+                                </tr>
                             </tbody>
                         </table>
                         
                         </tbody>
                         </table>
-                    <input type="submit" name="submit" value="Make Payments" class="btn btn-warning btn-block" style="background: #ff4500;;" >
+                    <input type="submit" name="submit" value="Cash on Delivery" class="btn btn-warning btn-block" style="background: #ff4500;" >
                 </form>
+<!--------------------------------------------------------------------------------------------------------------------------------------------------------RAZORPAY-->
+                <div class="center">
+                <form action="{% url 'razorpay' order.order_number %}" method="POST" >{% csrf_token %}
+                    <script
+                        console.log(amount)
+                        src="https://checkout.razorpay.com/v1/checkout.js"
+                        data-key="rzp_test_4RWq9AydeWjoaj"
+                        data-amount="{{razoypay_amount}}" 
+                        data-currency="INR"
+                        data-order_id="{{payment.id}}"
+                        data-buttontext="Pay with Razorpay"
+                        data-name="Mridhul"
+                        data-description="How are you"
+                        data-image="https://example.com/your_logo.jpg"
+                        data-prefill.name="mridhul"
+                        data-prefill.email="mridhul@example.com"
+                        data-theme.color="orange"
+                    ></script>
+                    <input type="" custom="Hidden Element" name="hidden">
+                    </form>
+                </div>
+<!---------------------------------------------------------------------------------------------------------------------------------------------------------END RAZORPAY-->
+                <div id="paypal-button-container"></div>
+                <div id="card-button-container" class="hidden btn btn-warning btn-block" style="background: #ff4500;"><button>Cards</button></div>
                 
                     <a href="{% url 'home' %}" class="btn btn-light btn-block">Continue Shopping</a>
         
@@ -237,6 +285,108 @@
         </div> <!-- container .//  -->
         </section>
         <!-- ========================= SECTION CONTENT END// ========================= -->
+
+
+            <!-- Include the PayPal JavaScript SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AcxS8wzOOf7gbKpkMRjAgYHVFfTOEfHtvLDeaELad_x7dKHy2uN9cM-kmfKDnGw4fUpV0yHdlzWdLc31&currency=USD"></script>
+
+    <script>
+
+    function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+    }
+
+        // Listen for changes to the radio fields
+        document.querySelectorAll('input[name=payment-option]').forEach(function(el) {
+            el.addEventListener('change', function(event) {
+
+                // If PayPal is selected, show the PayPal button
+                if (event.target.value === 'paypal') {
+                    document.querySelector('#card-button-container').style.display = 'none';
+                    document.querySelector('#paypal-button-container').style.display = 'inline-block';
+                }
+
+                // If Card is selected, show the standard continue button
+                if (event.target.value === 'card') {
+                    document.querySelector('#card-button-container').style.display = 'inline-block';
+                    document.querySelector('#paypal-button-container').style.display = 'none';
+                }
+            });
+        });
+
+        // Hide Non-PayPal button by default
+        document.querySelector('#card-button-container').style.display = 'none';
+
+        var amount = "{{dollar_total}}"
+        var url = "{% url 'paypal' %}"
+        var csrftoken = getCookie('csrftoken');
+
+        var order_id = "{{order.order_number}}"
+        redirect_url = "{% url 'orderConfirm' order.order_number %}"
+
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+            
+            style: {
+                layout: 'horizontal'
+            },
+
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: amount,
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    console.log(details)
+                    sendData();
+                    // Show a success message to the buyer
+                    
+
+                    function sendData (){
+                        fetch(url,{
+                            method : "POST",
+
+                            headers:{
+                                "Content-type":"application/json",
+                                "X-CSRFToken": csrftoken,
+                            },
+                            body: JSON.stringify({
+                                orderID:order_id,
+                                trans_ID:details.id,
+                                payment_method:"PayPal",
+                                status:details.status,
+                            }),
+                        })
+                        .then((response)=>response.json())
+                        .then((data) =>{
+                            window.location.href=redirect_url +'?order_number='+data.order_number+'&payment_id='+data.trans_ID
+                    });
+                    }
+
+                });
+            }
+        }).render('#paypal-button-container');
+    </script>
 
 
 {% endblock content %}

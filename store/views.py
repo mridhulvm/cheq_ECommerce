@@ -6,6 +6,9 @@ from django.views.decorators.cache import never_cache
 from twilio.rest import Client
 import random
 
+from django.core.files.base import ContentFile #base 64 to image conversion
+import base64
+
 
 
 from django.contrib import messages,auth
@@ -16,6 +19,7 @@ from cart.models import Cart,CartItem
 from product.models import Product
 from category.models import Category
 from accounts.models import Account,UserPropic
+from orders.models import *
 
 import requests
 from .forms import AccountForm
@@ -124,7 +128,7 @@ def login(request):
         else:
             messages.info(request, 'Invalid username or password')
     return render(request,'accounts/login.html')
-
+#---------------------------------------------------------------------------OTP LOGIN------------------
 
 def login_otp(request):
     if request.method=='POST':
@@ -187,14 +191,14 @@ def verify_otp(request):
 def checkout(request):
     context = {}
     return render(request,'store/checkout.html')
-
+#----------------------------------------------------------------------------------FAVOURITES------------
 @login_required(login_url='login')
 @never_cache
 def favourites(request):
     context = {}
     return render(request,'store/favourites.html')        
 
-
+#---------------------------------------------------------------------------------PRODUCTS-----------------
 def productDetail(request,id):
     obj = Product.objects.get(id=id)
     in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request),product=obj).exists()
@@ -212,6 +216,7 @@ def productFilter(request):
     }
     return render(request,'store/productFilter.html',context)
 
+#----------------------------------------------------------------------------------ACCOUNT--------------------
 def myAccount(request):
     if UserPropic.objects.filter(user=request.user).exists():
         obj=UserPropic.objects.get(user=request.user)
@@ -226,6 +231,126 @@ def myAccount(request):
     }
     return render (request,'store/myAccount.html',context)
 
-def editPropic(request,id):
+def editPropic(request):
+    if request.POST.get('pro_img1'):
+
+        current_user = request.user
+        pro_pic_instance = UserPropic.objects.get(user = current_user )
+
+        if pro_pic_instance.pro_pic:   #delete previous image from database
+            pro_pic_instance.pro_pic.delete()
+
+        image_name = pro_pic_instance.user.email
+
+        cropped_image = request.POST['pro_img1']
+
+        format, img1 = cropped_image.split(';base64,')
+        ext = format.split('/')[-1]
+        image_data = ContentFile(base64.b64decode(img1), name=image_name + '1.' + ext)
+
+        pro_pic_instance.pro_pic = image_data
+        pro_pic_instance.save()
+
+    return redirect('myAccount')
+
+
+def editAccountDetails(request):
+    if UserPropic.objects.filter(user=request.user).exists():
+        pro_pic_instance=UserPropic.objects.get(user=request.user)
+    else:
+        pro_pic_instance = UserPropic()
+        pro_pic_instance.user = request.user
+        pro_pic_instance.save()  
+
     if request.method == 'POST':
-        pass
+
+        current_user = request.user
+        account_instance = Account()
+        account_instance = current_user
+
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        phone_number = request.POST.get('phone_number')
+
+        if Account.objects.filter(email = email).exists():
+            same_email=  Account.objects.get(email = email)
+            if same_email.id != account_instance.id :
+                messages.error(request,"email already exists")
+                return redirect('editAccount')
+
+        if Account.objects.filter(phone_number = phone_number).exists():
+            same_phn = Account.objects.get(phone_number = phone_number)
+            if same_phn.id != account_instance.id :
+                messages.error(request,"phone number already exists")
+                return redirect('editAccount')
+
+
+
+        account_instance.first_name = first_name
+        account_instance.email = email
+        account_instance.last_name = last_name
+        account_instance.phone_number = phone_number
+        account_instance.save()
+
+        #change image
+        if request.POST.get('pro_img1'):
+            cropped_image = request.POST['pro_img1']
+
+            image_name = pro_pic_instance.user.email
+            format, img1 = cropped_image.split(';base64,')
+            ext = format.split('/')[-1]
+            image_data = ContentFile(base64.b64decode(img1), name=image_name + '1.' + ext)
+
+            if pro_pic_instance.pro_pic:   #delete previous image from database
+                pro_pic_instance.pro_pic.delete()
+
+            pro_pic_instance.pro_pic = image_data
+            pro_pic_instance.save()
+
+        return redirect('myAccount')
+
+    context = {
+        'user' : request.user,
+        'proPic': pro_pic_instance,
+    }
+    return render (request,'store/editMyAccount.html',context)
+#-----------------------------------------------------------------------------ADDRESS----------------
+def myAddress(request):
+    context = {
+
+    }
+    return render (request,'store/myAddress.html',context)
+
+def addAddress(request):
+    context = {
+
+    }
+    return render (request,'store/myAddress.html',context)
+
+def editAddress(request):
+    context = {
+
+    }
+    return render (request,'store/myAddress.html',context)        
+#-----------------------------------------------------------------------------ORDERS----------------
+    
+def myOrders(request):
+    ordered_products = OrderProduct.objects.filter(user=request.user)
+    print(ordered_products)
+    context = {
+    "ordered_products" : ordered_products
+    }
+    return render (request,'store/myOrders.html',context)    
+
+def orderDetail(request,id):
+    print(id)
+    if OrderProduct.objects.filter(id=id).exists():
+        ordered_product = OrderProduct.objects.get(id=id)
+    else:
+        return redirect('myOrders')
+
+    context = {
+    "ordered_product" : ordered_product
+    }
+    return render (request,'store/orderDetail.html',context)   

@@ -14,7 +14,16 @@ urlpatterns = [
      path('checkout',views.checkout,name="checkout"),
      path('favourites',views.favourites,name="favourites"),
      path('myAccount',views.myAccount,name="myAccount"),
-     path('editPropic/<int:id>',views.editPropic,name="editPropic"),
+     path('myAddress',views.myAddress,name="myAddress"),
+     path('myOrders',views.myOrders,name="myOrders"),
+
+
+     path('orderDetail/<int:id>',views.orderDetail,name="orderDetail"),
+     path('editAccountDetails',views.editAccountDetails,name="editAccountDetails"),
+     path('editPropic',views.editPropic,name="editPropic"),
+
+     path('addAddress',views.addAddress,name="addAddress"),
+     path('editAddress',views.editAddress,name="editAddress"),
 
 
      

@@ -6,6 +6,8 @@ from django.views.decorators.cache import never_cache
 from django.core.files.base import ContentFile
 import base64
 
+from django.db.models import Count,Sum,F
+
 
 from accounts.models import Account
 from category.models import Category
@@ -61,8 +63,87 @@ def adminhome(request):
     if request.session.get('admin_log') != True:
         return redirect('adminlogin')
     else:
-        context = {}
-        return render(request, 'admin/index.html')
+        completed_order= OrderProduct.objects.filter(status = "Delivered")
+        sales = OrderProduct.objects.aggregate(sales=Sum( F('product_price')*F('quantity') ))['sales']
+        products = Product.objects.all()
+
+        paypal_orders =Payment.objects.filter(payment_method='PayPal').aggregate(paypal_orders=Sum('amount_paid'))['paypal_orders']
+        cod_orders =Payment.objects.filter(payment_method='COD').aggregate(cod_orders=Sum('amount_paid'))['cod_orders']
+        razorpay_orders =Payment.objects.filter(payment_method='Razorpay').aggregate(razorpay_orders=Sum('amount_paid'))['razorpay_orders']
+
+
+        # stock=0
+        # for product in products:
+        #     stock +=product.price*product.stock
+        stock = Product.objects.aggregate(stock=Sum(F('stock') * F('price') ))['stock']
+
+
+        print("----------------------------------delivered---",completed_order)
+        revenue=0
+        for one_order in completed_order:
+            revenue += one_order.product_price*one_order.quantity
+
+        print("revenue---------------------------",revenue,sales)
+        context = {
+            "completed_order":completed_order,
+            "revenue":revenue,
+            "sales":sales,
+            "stock":stock,
+            "paypal_orders":paypal_orders,
+            "cod_orders":cod_orders,
+            'razorpay_orders':razorpay_orders,
+        }
+        return render(request, 'admin/index.html', context)
+#------------------------------------------------------------------SALES REPORT  
+
+def salesReport(request):
+    orders=Order.objects.filter(is_ordered=True)
+    context ={
+    "orders":orders,
+    }
+    return render(request, 'admin/salesReport.html', context)
+
+def datewiseReport(request):
+    if request.GET.get('start') and request.GET.get('end'):
+        start_date=request.GET.get('start')
+        end_date=request.GET.get('end')
+        orders=Order.objects.filter(is_ordered=True,updated_at__range=[start_date,end_date])
+
+    else:   
+        orders=Order.objects.filter(is_ordered=True)
+    context ={
+    "orders":orders,
+    }
+    return render(request, 'admin/salesReport.html', context)
+
+def monthlyReport(request):
+    if request.GET.get('month') and request.GET.get('year'):
+        month=request.GET.get('month')
+        year=request.GET.get('year')
+        print(month,year)
+        orders=Order.objects.filter(is_ordered=True)
+
+    else:   
+        orders=Order.objects.filter(is_ordered=True)    
+    context ={
+    "orders":orders,
+    }
+    return render(request, 'admin/salesReport.html', context)
+
+def yearlyReport(request):
+    if request.GET.get('year'):
+        year=request.GET.get('year')
+        print(year)
+        orders=Order.objects.filter(is_ordered=True,updated_at__year=[year])
+
+    else:   
+        orders=Order.objects.filter(is_ordered=True)    
+    context ={
+    "orders":orders,
+    }
+    return render(request, 'admin/salesReport.html', context)
+
+
 
 # -----------------------------------------------------------------CATEGORY
 
@@ -349,12 +430,13 @@ def viewOrder(request):
         return redirect('adminlogin')
 
 def statusOrder(request,id):
-    print("--------------------id",id)
     if request.method == "GET":
+
         status=request.GET['status']
-        print("--------------------------status",status)
         order_instance = OrderProduct.objects.get(id=id)
+
         order_instance.status = status
         order_instance.save()
+        
     return redirect('viewOrder')
 #  

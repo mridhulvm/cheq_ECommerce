@@ -28,6 +28,13 @@ urlpatterns = [
     path('viewOrder',views.viewOrder,name="viewOrder"),
     path('statusOrder/<int:id>',views.statusOrder,name="statusOrder"),
 
+    path('salesReport',views.salesReport,name="salesReport"),
+    path('datewiseReport',views.datewiseReport,name="datewiseReport"),
+    path('monthlyReport',views.monthlyReport,name="monthlyReport"),
+    path('yearlyReport',views.yearlyReport,name="yearlyReport"),
+
+
+
 
 
 
