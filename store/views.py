@@ -104,8 +104,12 @@ def signup(request):
 
                     referred_user_instance = ReferralUsers.objects.get(referral_code = referral_code) #get user referral instance
                     control_instance = ReferralControl.objects.first()
+                    
 
-                    if control_instance.is_available != True : #cannot add referral when referral control is false
+                    try:
+                        if control_instance.is_available != True : #cannot add referral when referral control is false
+                            return JsonResponse({'status':True,'message':"You are registered!!!!  referral unavailable "})  
+                    except:  #when is_available is not added
                         return JsonResponse({'status':True,'message':"You are registered!!!!  referral unavailable "})  
 
                     if control_instance.check_expired_date_only == True: #cannot  add referral when expired in date and available
@@ -160,13 +164,7 @@ def signup(request):
     #     'form': form
     # }
     return render(request,'accounts/register.html')
-#===========================referral session creation
 
-def referralSignup(request,referral_code):
-    if request.session.get('ref_code'):
-        del request.session['ref_code']
-    request.session['ref_code']=referral_code
-    return redirect('signup')
 #===========================referral session creation end
 def signout(request):
     logout(request)
@@ -219,7 +217,7 @@ def login_otp(request):
             otp = random.randint(100000,999999)
             strotp=str(otp)
             account_sid ='ACca48f33a1a36f7da7d530b7397521bde'
-            auth_token ='df525d6f373b3ac76820539225e241ca'
+            auth_token ='34bfdcb6e74a3ba13c230ab16935daa6'
             client = Client(account_sid, auth_token)
 
             message = client.messages \
@@ -535,12 +533,12 @@ def generateReferral(request):
     print("referralGenerate")
     if ReferralUsers.objects.filter(user = request.user).exists():
         code_instance = ReferralUsers.objects.get(user = request.user)
-        return  JsonResponse({'code':"http://127.0.0.1:8000/"+code_instance.referral_code,'message':"code given"})
+        return  JsonResponse({'code':"http://127.0.0.1:8000/referral/"+code_instance.referral_code,'message':"code given"})
 
     else:
         code_instance = ReferralUsers()
         code_instance.user = request.user
         code_instance.referral_code=str(uuid.uuid4()).replace("-","")[:12]
         code_instance.save()
-        return JsonResponse({'code':"http://127.0.0.1:8000/"+code_instance.referral_code,'message':"code generated"})
+        return JsonResponse({'code':"http://127.0.0.1:8000/referral/"+code_instance.referral_code,'message':"code generated"})
 

@@ -150,7 +150,7 @@
                         <div class="owl-carousel tab-slider" data-item="5">
                             {% for product in products %}
 
-                            <div class="  u-s-m-b-30">
+                            <div class="  u-s-m-b-30 container">
                                 <div class="product-o product-o--hover-on">
                                     <div class="product-o__wrap">
 
@@ -178,11 +178,11 @@
                                         </div>
                                     </div>
 
-                                    <span class="product-o__category">
+                                    <!-- <span class="product-o__category"> -->
 
                                         <!-- <a href="shop-side-version-2.html">Women Clothing</a></span> -->
 
-                                    <span class="product-o__name">
+                                    <span class="product-o__name"  style="display: flex;"  >
 
                                         <a href="{% url 'productDetail' product.id %}">{{ product.slug }}</a>
                                     </span>

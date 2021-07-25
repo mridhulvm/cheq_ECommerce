@@ -36,13 +36,13 @@ function Check(that) {
   <label for="car">Muu, mikä?</label> <input type="text" id="car" name="car" /><br />
 </div>
 <!---------------------------------------------------------Category-->
-<div class="col-md-6 grid-margin stretch-card">
+<div class="col-md-6 grid-margin stretch-card mx-auto">
   <div class="card">
     <div class="card-body">
 
       <h4 class="card-title">Referral Control</h4>
 
-      <form class="forms-sample"  method="POST" action="{% url 'addReferral' %}">
+      <form class="forms-sample"  method="POST" action="{% url 'addReferral' %}" onsubmit="return ValidationEvent()">
         {% csrf_token %}
 
         <!-- <div class="form-group">
@@ -56,7 +56,8 @@ function Check(that) {
         <div class="form-group row">
           <label for="inputEmail3" class="col-sm-2 col-form-label">Referral Limit (Users)</label>
           <div class="col-sm-4">
-            <input type="integer" class="form-control" id="exampleInputUsername1" name="referral_user_limit" value="{{referral_user_limit}}"  placeholder="referral user limit" required>
+            <input type="integer" class="form-control" id="user_limit" onkeyup="user_validate()"  name="referral_user_limit" value="{{referral_user_limit}}"  placeholder="referral user limit" required>
+            <p style="color:red;display: block;" id="user_limit_error"></p>
 
         </div>
         </div>  
@@ -95,7 +96,9 @@ function Check(that) {
         <div class="form-group row">
           <label for="inputEmail3" class="col-sm-2 col-form-label">Amount Limit ₹</label>
           <div class="col-sm-4">
-            <input type="integer" class="form-control" id="exampleInputEmail1" name="referral_amount" value="{{referral_amount}}"  placeholder="referral amount" required>
+            <input type="integer" required class="form-control" id="amount_limit" onkeyup="amount_validate()" name="referral_amount" value="{{referral_amount}}"  placeholder="referral amount" required >
+            <p style="color:red;display: block;" id="amount_error"></p>
+
 
         </div>
         </div>  
@@ -109,6 +112,8 @@ function Check(that) {
           <input type="checkbox" class="form-check-input" name="is_available"  > Is Available </label>
 
           {% endif %} 
+          <p style="color:red;display: block;" id="form_submit_error"></p>
+
         </div>           
       
        
@@ -119,6 +124,149 @@ function Check(that) {
     </div>
   </div>
 </div>
+<script>
+  var user_limit_check = false
+  var amount_check=false
 
+      function user_validate(){
+        var user_limit_input=document.getElementById('user_limit').value
+           
+        var number_regex=/^\d{1,4}$/
+        var name_regex=/^[a-zA-Z ]{1,30}$/;
+
+        var user_limit_input_check_alphabet=document.getElementById('user_limit').value
+
+        lastIndex = user_limit_input_check_alphabet.length;
+        user_limit_input_check_alphabet = user_limit_input_check_alphabet[lastIndex - 1] 
+        console.log(user_limit_input_check_alphabet)
+
+        if(name_regex.test(user_limit_input_check_alphabet)){
+
+        document.getElementById('user_limit_error').innerHTML="amount number only allows digits"
+        user_limit_check=false
+
+        }              
+        else if (number_regex.test(user_limit_input)){
+        document.getElementById('user_limit_error').innerHTML=""
+        user_limit_check=true
+
+        }
+
+        else{
+        document.getElementById('user_limit_error').innerHTML="Only 4 digits allowed"
+        }
+        }
+
+
+  function amount_validate(){
+        var amount_input=document.getElementById('amount_limit').value
+           
+        var number_regex=/^\d{1,6}$/
+        var name_regex=/^[a-zA-Z ]{1,30}$/;
+
+        var amount_input_check_alphabet=document.getElementById('amount_limit').value
+
+        lastIndex = amount_input_check_alphabet.length;
+        amount_input_check_alphabet = amount_input_check_alphabet[lastIndex - 1] 
+        console.log(amount_input_check_alphabet)
+
+        if(name_regex.test(amount_input_check_alphabet)){
+
+        document.getElementById('amount_error').innerHTML="amount number only allows digits"
+        amount_check=false
+
+        }              
+        else if (number_regex.test(amount_input)){
+        document.getElementById('amount_error').innerHTML=""
+        amount_check=true
+
+        }
+
+        else{
+        document.getElementById('amount_error').innerHTML="Only 6 digits allowed"
+        amount_check=false
+
+        }
+    }  
+// Below Function Executes On Form Submit
+function ValidationEvent() {
+  var amount_input=document.getElementById('amount_limit').value
+    
+    var number_regex=/^\d{1,6}$/
+    var name_regex=/^[a-zA-Z ]{1,30}$/;
+
+    var amount_input_check_alphabet=document.getElementById('amount_limit').value
+
+           lastIndex = amount_input_check_alphabet.length;
+           amount_input_check_alphabet = amount_input_check_alphabet[lastIndex - 1] 
+           console.log(amount_input_check_alphabet)
+           if(amount_input == "" || amount_input == "None"){
+   
+            document.getElementById('amount_error').innerHTML="amount number cannot be empty"
+            amount_check=false
+
+            }    
+           else if(name_regex.test(amount_input_check_alphabet)){
+   
+           document.getElementById('amount_error').innerHTML="amount number only allows digits"
+           amount_check=false
+   
+           }              
+           else if (number_regex.test(amount_input)){
+           document.getElementById('amount_error').innerHTML=""
+           amount_check=true
+   
+           }
+   
+           else{
+           document.getElementById('amount_error').innerHTML="Only 6 digits allowed"
+           amount_check=false
+   
+           }
+
+      var user_limit_input=document.getElementById('user_limit').value
+      
+      var user_number_regex=/^\d{1,4}$/
+
+           var user_limit_input_check_alphabet=document.getElementById('user_limit').value
+   
+           lastIndex = user_limit_input_check_alphabet.length;
+           user_limit_input_check_alphabet = user_limit_input_check_alphabet[lastIndex - 1] 
+           console.log(user_limit_input_check_alphabet)
+
+           if(user_limit_input == "" || user_limit_input == "None"){
+            document.getElementById('user_limit_error').innerHTML="amount number cannot be empty"
+           user_limit_check=false
+           }
+           else if(name_regex.test(user_limit_input_check_alphabet)){
+   
+           document.getElementById('user_limit_error').innerHTML="amount number only allows digits"
+           user_limit_check=false
+   
+           }              
+           else if (user_number_regex.test(user_limit_input)){
+           document.getElementById('user_limit_error').innerHTML=""
+           user_limit_check=true
+   
+           }
+   
+           else{
+           document.getElementById('user_limit_error').innerHTML="Only 4 digits allowed"
+           user_limit_check=false
+           }
+           
+
+
+  if (user_limit_check=true && amount_check == true){
+    return true;   // Returns Value
+
+  }
+  else{
+    document.getElementById('form_submit_error').innerHTML="Enter Valid Credentials"
+
+    return false;
+  }
+}              
+</script>
 
 {% endblock content %}

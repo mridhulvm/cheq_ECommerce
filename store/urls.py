@@ -36,7 +36,6 @@ urlpatterns = [
      path('productFilter',views.productFilter,name="productFilter"),
      path('productDetail/<int:id>',views.productDetail,name="productDetail"),
 
-     path('<str:referral_code>',views.referralSignup,name="referralSignup"),
 
 
 ]

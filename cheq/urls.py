@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', include('adminPanel.urls')),
     path('cart/', include('cart.urls')),
     path('orders/', include('orders.urls')),
+    path('referral/', include('referral.urls')),
 
 
 

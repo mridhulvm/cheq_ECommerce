@@ -950,7 +950,7 @@ def addReferral(request):
             referral_amount = None
          
             referral_enddate = None
-
+            is_available = False
 
         else:
             control_instance = ReferralControl.objects.first()
@@ -1003,6 +1003,7 @@ def addReferral(request):
     
                 control_instance.save()
                 return redirect('viewReferral')
+            
         context={
             'referral_user_limit':referral_user_limit,
             'referral_enddate':referral_enddate,
