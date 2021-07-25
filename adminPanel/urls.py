@@ -20,6 +20,26 @@ urlpatterns = [
     path('availProduct/<int:id>',views.availProduct,name="availProduct"),
     path('deleteProduct/<int:id>',views.deleteProduct,name="deleteProduct"),
 
+    path('viewOffer',views.viewOffer,name="viewOffer"),
+    path('addOffer',views.addOffer,name="addOffer"),
+    path('editProductOffer/<int:id>',views.editProductOffer,name="editProductOffer"),
+    path('editCategoryOffer/<int:id>',views.editCategoryOffer,name="editCategoryOffer"),
+    path('deleteCategoryOffer/<int:id>',views.deleteCategoryOffer,name="deleteCategoryOffer"),
+    path('deleteProductOffer/<int:id>',views.deleteProductOffer,name="deleteProductOffer"),
+
+    path('viewCoupon',views.viewCoupon,name="viewCoupon"),
+    path('addCoupon',views.addCoupon,name="addCoupon"),
+    path('editCoupon/<int:id>',views.editCoupon,name="editCoupon"),
+    path('deleteCoupon/<int:id>',views.deleteCoupon,name="deleteCoupon"),
+    path('availCoupon/<int:id>',views.availCoupon,name="availCoupon"),
+
+    path('viewReferral',views.viewReferral,name="viewReferral"),
+    path('addReferral',views.addReferral,name="addReferral"),
+    path('availReferral/<int:id>',views.availReferral,name="availReferral"),
+
+
+
+
 
 
     path('viewUser',views.viewUser,name="viewUser"),

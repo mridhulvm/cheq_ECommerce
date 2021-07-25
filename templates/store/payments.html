@@ -63,7 +63,7 @@
                 </div>
                 <div class="col form-group">
         
-                    <label for="">{{order.phone}}</label>
+                    <label for="">Phone :{{order.phone}}</label>
                 </div>
             </div>
             <div class="form-row">
@@ -73,7 +73,7 @@
                 </div>
                 <div class="col form-group">
         
-                    <label for=""></label>
+                    <label for="">PIN :{{order.pin}}</label>
                 </div>
             </div>
             
@@ -125,22 +125,22 @@
 
             <h5 >Paypal</h5>
             <label>
-                <input type="radio" name="payment-option" value="paypal" checked>
+                <input type="radio" name="payment-option" value="paypal" >
                 <img src="{% static 'store/payments/paypal_mark.jpg' %}" alt="Pay with Paypal">
             </label>
             <hr>
 
             <h5 >Razorpay</h5>
             <label>
-                <input type="radio" name="payment-option" value="razorpay" checked>
+                <input type="radio" name="payment-option" value="razorpay" >
                 <img src="{% static 'store/payments/razorpay.png' %}" alt="Pay with razorpay" style="height: 70px;">
 
             </label>  
             <hr>
 
-            <h5 >Card</h5>
-            <label>
-                <input type="radio" name="payment-option" value="card">
+            <h5 hidden >Card</h5>
+            <label hidden>
+                <input type="radio" name="payment-option" value="card" >
                 <img src="{% static 'store/payments/card_mark.pn' %}" alt="Accepting Visa, Mastercard, Discover and American Express">
             </label>
 
@@ -203,10 +203,14 @@
                         {% endfor %}
                         <table class="f-cart__table">
                             <tbody>
-                                <!-- <tr>
-                                    <td>SHIPPING</td>
-                                    <td>₹4.00</td>
-                                </tr> -->
+                                <tr>
+                                    <td>COUPON OFFER</td>
+                                    {% if coupon_price == None %}
+                                    <td>-₹00</td>
+                                    {% else %}
+                                    <td>-₹{{coupon_price}} </td>
+                                    {% endif %}
+                                </tr>
                                 <tr>
                                     <td>SUBTOTAL</td>
                                     <td>₹{{total}}</td>

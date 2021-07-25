@@ -1,0 +1,64 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% include 'includes/alerts.html' %}
+
+<!---------------------------------------------------------CouponForm-->
+<div class="col-6 grid-margin stretch-card mx-auto">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">{{table_name}}</h4>
+        <!-- <p class="card-description"> Basic form elements </p> -->
+        <form class="forms-sample"  method="POST" enctype="multipart/form-data">
+    
+          {% csrf_token %}
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-2 col-form-label">Coupon Title</label>
+            <div class="col-sm-8">
+              {{couponform.coupon_title}}      
+          </div>
+          </div>           
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-2 col-form-label"> Limit ₹</label>
+            <div class="col-sm-8">
+              {{couponform.coupon_limit}}      
+          </div>
+          </div> 
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-2 col-form-label"> Offer Percentage</label>
+            <div class="col-sm-8">
+              {{couponform.coupon_offer}}      
+          </div>
+          </div> 
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-2 col-form-label">Starting Date </label>
+            <div class="col-sm-4">
+              {{couponform.coupon_start}}      
+          </div>
+          </div>                               
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-2 col-form-label">Ending Date</label>
+            <div class="col-sm-4">
+              {{couponform.coupon_end}}      
+          </div>
+          </div> 
+          <div class="form-group row">
+            <div class="col-sm-2">Availability</div>
+            <div class="col-sm-8"> {{couponform.is_available}}      
+              <div class="form-check">
+                 
+                <label class="form-check-label" for="gridCheck1">
+                </label>
+              </div>
+            </div>
+          </div>         
+          <button type="submit" class="btn btn-primary mr-2">Submit</button>
+          <a class="btn btn-dark" href="{% url 'viewCoupon'  %}">Cancel</a>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!--------------------------------------------------------CouponForm-->
+  {% endblock content %}

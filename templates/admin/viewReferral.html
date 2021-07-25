@@ -1,0 +1,149 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+{% block content %}
+<!--==============================================REFERRAL CONTROLS===================-->
+
+
+
+<div class="col-lg-9 grid-margin stretch-card mx-auto">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Referral Controls</h4>
+      
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>                    
+                <th>Limit of Referral</th>                                                                                                        
+                <!-- <th>Referral Percentage</th>
+                <th>Referral Percentage Limit</th> -->
+                <th>Referral Amount ₹</th>
+                <th>Referral Expiry</th>
+                <th>Referral Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                  {% for referral_control in referral_controls %}
+
+                  {% if referral_control.check_expired %}
+
+                  <td style="color: red;">{{referral_control.referral_user_limit}}</td>
+                  {% else %}
+                  <td>{{referral_control.referral_user_limit}}</td>
+                  {% endif %}
+
+                <!-- <td>{{ referral_control.referral_percentage }}</td>
+                <td>{{ referral_control.referral_percentage_limit }}</td> -->
+                
+                {% if referral_control.check_expired %}
+
+                <td style="color: red;">{{referral_control.referral_amount}}</td>
+                {% else %}
+                <td>{{referral_control.referral_amount}}</td>
+                {% endif %}
+
+                {% if referral_control.check_expired_date_only %}
+
+                <td style="color: red;">{{referral_control.referral_end_date}}</td>
+                {% else %}
+                <td>{{referral_control.referral_end_date}}</td>
+                {% endif %}
+
+
+                {% if referral_control.is_available == True %}
+                <td><a href="{% url 'availReferral' referral_control.id %}" class="btn btn-outline-success "><span class="glyphicon glyphicon-pencil" >  Available </span></a>
+                </td>
+                {% else %}
+                <td><a href="{% url 'availReferral' referral_control.id %}" class="btn btn-outline-danger"><span class="glyphicon glyphicon-pencil" >UnAvailable</span></a>
+                </td>
+                {% endif %}
+            
+                {% endfor %}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<!--========================================================referred_users================-->
+<div class="row">
+
+
+
+<div class="col-lg-6 grid-margin stretch-card ">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Referrals</h4>
+        <!-- <p class="card-description"> Add class <code>.table-hover</code>
+        </p> -->
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>SL.no</th>
+                <th>Name</th>
+                <th>Reffered By</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for referral in referrals %}
+              <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{ referral.user.first_name }} {{ referral.user.last_name }}</td>
+                <td>{{ referral.recommended_user.first_name }} {{ referral.recommended_user.last_name }}</td>
+           
+
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6 grid-margin stretch-card ">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title"> Referred Users</h4>
+        <!-- <p class="card-description"> Add class <code>.table-hover</code>
+        </p> -->
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>SL.no</th>
+                <th>Name</th>
+                <th>Reffered Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for referred_user in referred_users %}
+              <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{ referred_user.user.first_name }} {{ referred_user.user.last_name }}</td>
+                <td>{{ referred_user.referral_count}}</td>
+           
+
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div><!----=========row-->
+  <script>
+    function myFunction() {
+
+      return confirm("Confirm Blocking ")
+    }
+    </script>
+
+{% endblock content %}

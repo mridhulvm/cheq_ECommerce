@@ -16,6 +16,7 @@
                 <th>Image</th>
                 <th>Category name</th>
                 <th>Category slug</th>
+                <th>Offer Percentage</th>
                 <th>Description</th>
                
               </tr>
@@ -27,8 +28,14 @@
                 <td><img src="{{ category.cat_image.url }}" alt=""></td>
                 <td>{{ category.category_name }}</td>
                 <td>{{ category.slug }}</td>
+                {% if category.offer_percentage  != None %}
+
+                  <td class="btn-outline-success ">{{ category.offer_percentage }}</td>
+                {% else %}
+                  <td class="btn-outline-danger ">{{ category.offer_percentage }}</td>    
+
+                {% endif %}
                 <td>{{ category.description }}</td>
-                <!-- <td><label class="badge badge-danger">edit</label></td> -->
 
                 <td><a href="{% url 'editCategory' category.id %}" class="btn btn-outline-success"><span class="glyphicon glyphicon-pencil" >Edit</span></a></td>
 

@@ -93,27 +93,39 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <span class="table-p__price">₹{{cart_item.product.price}}</span></td>
+                                            {% if cart_item.product.offer_status  %}
+                                                <span class="table-p__price">₹{{cart_item.product.offer_price}}<del style="color: tomato;">₹{{ cart_item.product.price }}</del> </span>
+                                            {% else %}
+                                                <span class="table-p__price">₹{{cart_item.product.price}}</span>
+                                            {% endif %}
+                                        </td>
                                             <td>
-                                            <span class="table-p__price">₹{{cart_item.sub_total}}</span></td>
+                                            <span class="table-p__price" id="{{cart_item.product.id}}_subtotal" >₹{{cart_item.sub_total}}</span></td>
                                         <td>
                                             <div class="table-p__input-counter-wrap">
 
                                                 <!--====== Input Counter ======-->
                                                 <div class="input-counter">
+                                                    {% if cart_item.quantity == 1  %}
 
-                                                    <a href="{% url 'minus_cart' cart_item.product.id %}" class="input-counter__minus fas fa-minus"></a>
+                                                    <p  style="display: none;"  id="{{cart_item.product.id}}_minus_button"  onclick="MinusCart('{{cart_item.product.id}}')"  class="input-counter__minus fas fa-minus"></p>
+                                                    {%  else %}
+                                                    <a  id="{{cart_item.product.id}}_minus_button"  onclick="MinusCart('{{cart_item.product.id}}')"  class="input-counter__minus fas fa-minus"></a>
 
-                                                    <input class="input-counter__text input-counter--text-primary-style" type="text" value="{{ cart_item.quantity}}" data-min="1" data-max="1000">
+                                                    {% endif%}
+                                                    <p class="input-counter__text input-counter--text-primary-style my-auto pt-2" type="text" id="{{cart_item.product.id}}_quantity"    data-min="1" data-max="1000" >{{ cart_item.quantity}}</p>
 
-                                                    <a href="{% url 'add_cart' cart_item.product.id %}" class="input-counter__plus fas fa-plus"></a></div>
+                                                    <a onclick="AddCart('{{cart_item.product.id}}')"  class="input-counter__plus fas fa-plus"></a>
+                                                                                                       
+                                                </div>
+                                             
                                                 <!--====== End - Input Counter ======-->
                                             </div>
                                         </td>
                                         <td>
                                             <div class="table-p__del-wrap">
 
-                                                <a class="far fa-trash-alt table-p__delete-link" onclick="return myFunction()" href="{% url 'delete_cart' cart_item.product.id %}"></a></div>
+                                                <a class="far fa-trash-alt table-p__delete-link" onclick="return deleteFunction()" href="{% url 'delete_cart' cart_item.product.id %}"></a></div>
                                         </td>
                                     </tr>
                                     <!--====== End - Row ======-->
@@ -174,16 +186,16 @@
                                                     </tr> -->
                                                     <tr>
                                                         <td>SUBTOTAL</td>
-                                                        <td>₹{{total}}</td>
+                                                        <td id="total">₹{{total}}</td>
                                                     </tr>
                                                     <tr>
                                                         <td>TAX</td>
-                                                        <td>₹{{ tax}}</td>
+                                                        <td id="tax">₹{{ tax}}</td>
                                                     </tr>
                                                   
                                                     <tr>
                                                         <td>GRAND TOTAL</td>
-                                                        <td>₹{{grand_total}}</td>
+                                                        <td id="grand_total">₹{{grand_total}}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -204,11 +216,84 @@
     <!--====== End - Section 3 ======-->
 </div>
 <!--====== End - App Content ======-->
-<script>
-    function myFunction() {
 
+<script>
+    function deleteFunction() {
       return confirm("Confirm Deletion ")
     }
 </script>
+<!--=======================ajax=======-->
+<script>
+    function AddCart(product_id)
+    {
+        console.log(product_id)
+        $.ajax({
+        url:"{% url 'add_cart_ajax'  %}",
+        method: 'GET',
+        data: {'product_id':product_id},
+        dataType: 'json',
+        success: function (data) {
 
+        console.log(data)
+        if(data.status){         
+       
+            $('#cart_count').html(data.cart_count) ;
+            $('#'+product_id+'_subtotal').html("₹"+data.sub_total) ;
+            $('#'+product_id+'_quantity').html(data.product_quantity) ;
+            $('#total').html(data.total) ;
+            $('#tax').html(data.tax) ;
+            $('#grand_total').html(data.grand_total) ;
+
+            if(data.product_quantity > 1){
+                $('#'+product_id+'_minus_button').css("display", "block");
+            }
+                       
+        }else{                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+
+            alert(data.message) ;   
+        }
+
+        },
+        error: function(error){
+          console.log("Ajax cant send data")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+        }
+    })//ajax end  
+    }
+
+    function MinusCart(product_id)
+    {
+        console.log(product_id)
+        $.ajax({
+        url:"{% url 'minus_cart_ajax'  %}",
+        method: 'GET',
+        data: {'product_id':product_id},
+        dataType: 'json',
+        success: function (data) {
+
+        console.log(data)
+        if(data.status){         
+     
+            $('#cart_count').html(data.cart_count) ;
+            $('#'+product_id+'_subtotal').html("₹"+data.sub_total) ;
+            $('#'+product_id+'_quantity').html(data.product_quantity) ;
+            $('#total').html(data.total) ;
+            $('#tax').html(data.tax) ;
+            $('#grand_total').html(data.grand_total) ;
+
+            if(data.product_quantity == 1){
+                $('#'+product_id+'_minus_button').css("display", "none");
+            }
+                       
+        }else{                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+
+            alert(data.message) ;   
+        }
+
+        },
+        error: function(error){
+          console.log("Ajax cant send data")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+        }
+    })//ajax end  
+    }
+</script>
 {% endblock content %}

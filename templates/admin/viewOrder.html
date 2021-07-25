@@ -21,7 +21,7 @@
                 <th>Payment</th>
                 <th>Quantity</th>
                 <th>Status</th>
-                <th>User Cancelled</th>
+                <th>User Status</th>
               </tr>
             </thead>
             <tbody>
@@ -35,14 +35,17 @@
                 <td>{{ order.order.order_total }}</td>
                 <td>{{ order.payment.payment_method }}</td>
                 <td>{{ order.quantity }}</td>
+                
 
                 <!-- <td>{{ order.status }}</td> -->
                 <td>
-               
+                  {% if order.user_cancelled != "True" %}
                     <form action="{% url 'statusOrder' order.id %}" method="GET">
 
                        <select name="status" id="cars" class="btn btn-success selectpicker">
                         <option value="none" selected disabled hidden>{{order.status}}</option>
+
+                       
                          <option value="Ordered">Ordered</option>
                          <option value="Dispatched">Dispatched</option>
                          <option value="Cancelled">Cancelled</option>
@@ -50,12 +53,15 @@
                        </select>
                        <input type="submit" class="btn btn-success" value="Update">
                      </form>
+                     {% else %}
+                     <p class="btn btn-danger">{{order.status}}</p>
+                     {% endif %}
                      </td>
-                {% if order.user_cancelled %}
+                {% if order.user_cancelled != "True" %}
                  <td >
-                     <p class="btn btn-success">NO</p></td>
+                     <p class="btn btn-success">Not Cancelled</p></td>
                  {% else %}
-                 <td><p class="btn btn-success">Yes</p></td>
+                 <td><p class="btn btn-danger">User Cancelled</p></td>
                  {% endif %}
                 
 

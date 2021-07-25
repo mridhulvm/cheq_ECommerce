@@ -38,15 +38,19 @@ class Order(models.Model):
     user=models.ForeignKey(Account,on_delete=models.SET_NULL,null=True)
     payment=models.ForeignKey(Payment,on_delete=models.SET_NULL,blank=True,null=True)
     order_number=models.CharField(max_length=100,null=True)
+
     first_name=models.CharField(max_length=50)
     last_name=models.CharField(max_length=50)
     phone=models.CharField(max_length=50)
     email=models.EmailField(max_length=50)
+
     address_line1=models.CharField(max_length=50)
     address_line2=models.CharField(max_length=50,blank=True)
     
     city=models.CharField(max_length=50)
     state=models.CharField(max_length=50)
+    pin = models.CharField(max_length=50,blank=True,null=True)
+
     order_note=models.CharField(max_length=100,blank=True)
     order_total=models.FloatField(null=True)
     tax=models.FloatField(null=True)
@@ -55,6 +59,8 @@ class Order(models.Model):
     is_ordered=models.BooleanField(default=False)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
+    coupon_price = models.CharField(max_length=50,blank=True,null=True)
+
 
 
 
@@ -78,4 +84,7 @@ class OrderProduct(models.Model):
 
     def __str__(self):
         return self.product.product_name
+
+    def sub_total(self):
+        return self.quantity*self.product_price
             

@@ -1,0 +1,124 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% include 'includes/alerts.html' %}
+
+<!-- <script>
+function Check(that) {
+
+  if (that.value == "amount") {
+      document.getElementById("amount_input").style.display = "block";
+      document.getElementById("percent_input").style.display = "none";
+      document.getElementById("percent_limit").style.display = "none";      
+  }  
+
+ 
+  if (that.value == "percent") {
+      document.getElementById("percent_input").style.display = "block";
+      document.getElementById("percent_limit").style.display = "block";
+      document.getElementById("amount_input").style.display = "none";
+  }
+
+  if (that.value != "percent" && that.value != "amount" ){
+      document.getElementById("percent_input").style.display = "none";
+      document.getElementById("percent_limit").style.display = "none";
+      document.getElementById("amount_input").style.display = "none";
+
+  }
+
+}
+</script> -->
+
+
+<div id="ifYes" style="display: none;">
+  <label for="car">Muu, mikä?</label> <input type="text" id="car" name="car" /><br />
+</div>
+<!---------------------------------------------------------Category-->
+<div class="col-md-6 grid-margin stretch-card">
+  <div class="card">
+    <div class="card-body">
+
+      <h4 class="card-title">Referral Control</h4>
+
+      <form class="forms-sample"  method="POST" action="{% url 'addReferral' %}">
+        {% csrf_token %}
+
+        <!-- <div class="form-group">
+          <label for="exampleInputUsername1">Referral Users Limit </label>
+
+        </div>
+        <div class="form-group">
+          <label for="exampleInputUsername1">Referral End Date</label>
+        </div>       -->
+
+        <div class="form-group row">
+          <label for="inputEmail3" class="col-sm-2 col-form-label">Referral Limit (Users)</label>
+          <div class="col-sm-4">
+            <input type="integer" class="form-control" id="exampleInputUsername1" name="referral_user_limit" value="{{referral_user_limit}}"  placeholder="referral user limit" required>
+
+        </div>
+        </div>  
+        <div class="form-group row">
+          <label for="inputEmail3" class="col-sm-2 col-form-label"> Expiry Date</label>
+          <div class="col-sm-3">
+            <input type="date" class="form-control" id="exampleI" name="referral_end_date" value="{{ referral_enddate|date:'Y-m-d'}}"  placeholder="referral end date" required>
+
+        </div>
+        </div>                   
+        <!---==================CONTROL SELECTION=================-->
+        <!-- <div class="form-group">
+          <label for="exampleFormControlSelect1">Controls</label>
+
+          <select class="form-control form-control-lg" id="exampleFormControlSelect1"  onchange="Check(this);"required >
+            <option value=" " selected>Select Controls</option>
+            <option value="percent" >Referral Percentage</option>
+            <option value="amount" >Referral Amount</option>
+            
+          </select>
+        </div> -->
+        <!---====================PERCENTAGE CONTROL========-->
+        <!-- <div class="form-group" id="percent_input"  style="display: none;" >
+          <label for="exampleInputEmail1">Referral Percentage</label>
+          <input type="integer" class="form-control" id="exampleInputEmail1" name="referral_percentage" value="{{referral_percentage}}" placeholder="referral percentage">
+        </div>
+
+        <div class="form-group" id="percent_limit" style="display: none;">
+          <label for="exampleInputEmail1">Referral Percentage Limit</label>
+          <input type="integer" class="form-control" id="exampleInputEmail1" name="referral_percentage_limit" value="{{referral_percentage_limit}}"  placeholder="referral percentage limit">
+        </div>    -->
+        <!---==================AMOUNT CONTROL=========-->     
+        <!-- <div class="form-group" id="amount_input" style="display: block;">
+          <label for="exampleInputEmail1">Referral Amount</label>
+        </div> -->
+        <div class="form-group row">
+          <label for="inputEmail3" class="col-sm-2 col-form-label">Amount Limit ₹</label>
+          <div class="col-sm-4">
+            <input type="integer" class="form-control" id="exampleInputEmail1" name="referral_amount" value="{{referral_amount}}"  placeholder="referral amount" required>
+
+        </div>
+        </div>  
+        <!--==================AMOUNT AND PERCENTAGE CONTROL END===========-->
+        <div class="form-check form-check-flat form-check-primary">
+          <label class="form-check-label">
+          {% if is_available  %} 
+          <input type="checkbox" class="form-check-input" name="is_available" checked > Is Available </label>
+
+          {% else %}
+          <input type="checkbox" class="form-check-input" name="is_available"  > Is Available </label>
+
+          {% endif %} 
+        </div>           
+      
+       
+       
+        <button type="submit" class="btn btn-primary mr-2">Submit</button>
+        <a  href="{% url 'viewReferral' %}" class="btn btn-dark">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+{% endblock content %}

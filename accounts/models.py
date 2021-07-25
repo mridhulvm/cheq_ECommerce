@@ -38,8 +38,10 @@ from django.contrib.auth.models import AbstractBaseUser,AbstractUser
 class Account(AbstractUser):
     first_name=models.CharField(max_length=60)
     last_name = models.CharField(max_length=70)
+
     username = models.CharField(max_length=80, unique=True)
     password = models.CharField(max_length=100)
+
     email=models.EmailField(max_length=200,unique=True)
     phone_number = models.CharField(max_length=90, unique=True)
     # date=models.IntegerField(blank=True)
@@ -70,14 +72,16 @@ class Account(AbstractUser):
 
 class UserAddress(models.Model):
     user=models.ForeignKey(Account,on_delete=models.CASCADE)  
-    address_name=models.CharField(max_length=50,blank=True)
+    address_name=models.CharField(max_length=50)
+
     first_name=models.CharField(max_length=50)
     last_name=models.CharField(max_length=50)
-    phone=models.IntegerField(max_length=10)
+    phone=models.CharField(max_length=10)
     email=models.EmailField(max_length=50)
+
     address_line1=models.CharField(max_length=50)
     address_line2=models.CharField(max_length=50,blank=True)
-    pin = models.IntegerField(max_length=6)
+    pin = models.CharField(max_length=6)
     
     city=models.CharField(max_length=50)
     state=models.CharField(max_length=50)  

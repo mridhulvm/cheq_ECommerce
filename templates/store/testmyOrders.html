@@ -1,0 +1,144 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+
+
+
+<link rel="stylesheet" href="{% static 'store/myAccount/myAccount.css' %}">
+<div class="container rounded bg-white mt-5" >
+    <div class="row ">
+        <div class="col-md-4 border-right"  >
+
+
+
+
+            <div>
+
+                <a class="btn-list btn" href="{% url 'myAccount'%}">My Account</a>
+                <hr>
+
+            </div>
+
+            <div>
+                <a class="btn-list btn" href="{% url 'myAddress'%}">My Adresses</a>
+                <hr>
+
+            </div>
+            <div>
+
+                <a class="btn-list btn" href="{% url 'myOrders' %}">My Orders</a>
+                <hr>
+
+            </div>
+
+        </div>
+               
+    </div>
+</div>
+
+    <div class="row p-3">
+        {% for one_product in ordered_products %}
+
+        <div class="card mb-3 col-md-6" style="max-height: 240px;">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img src="{{ one_product.product.image1.url }}" class="img-fluid rounded-start" style="max-height: 230px;" alt="...">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <a class="card-link"  href="{% url 'orderDetail' one_product.id %}" >{{one_product.product.product_name }} </a>
+                  <p class="card-text"> 
+                      
+                    {% if one_product.user_cancelled == "True" %}
+                    <div class="progress" style="width: 240px;">
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: 100%"
+                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+
+                    </div>
+                    <div class="d-flex flex-row justify-content-between align-items-center " style="width: 240px;">
+                        <div class="d-flex flex-column justify-content-center align-items-center"><span> You
+                                Cancelled </span></div>
+                    </div>
+                {% elif one_product.status == "Ordered" %}
+                    <div class="progress" style="width: 240px;">
+
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 10%" aria-valuenow="0"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+
+                    </div>
+                    <div class="d-flex flex-row justify-content-between align-items-center" style="width: 240px;">
+                        <div class="d-flex flex-column align-items-start"> <i
+                                class="fas fa-check-circle"></i><span>Ordered</span></div>
+                        <div class="d-flex flex-column justify-content-center align-items-center"><i
+                                class="fas fa-shipping-fast"></i><span>Shipped</span></div>
+                        <div class="d-flex flex-column align-items-end"><i
+                                class="fas fa-archive"></i><span>Delivered</span></div>
+                    </div>
+                {% elif one_product.status == "Dispatched" %}
+                    <div class="progress" style="width: 240px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 50%"
+                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div class="d-flex flex-row justify-content-between align-items-center" style="width: 240px;">
+                        <div class="d-flex flex-column align-items-start"> <i
+                                class="fas fa-check-circle"></i><span>Ordered</span></div>
+                        <div class="d-flex flex-column justify-content-center align-items-center"><i
+                                class="fas fa-shipping-fast"></i><span>Shipped</span></div>
+                        <div class="d-flex flex-column align-items-end"><i
+                                class="fas fa-archive"></i><span>Delivered</span></div>
+                    </div>
+
+                {% elif one_product.status == "Delivered" %}
+                    <div class="progress" style="width: 240px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%"
+                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div class="d-flex flex-row justify-content-between align-items-center" style="width: 240px;">
+                        <div class="d-flex flex-column align-items-start"> <i
+                                class="fas fa-check-circle"></i><span>Ordered</span></div>
+                        <div class="d-flex flex-column justify-content-center align-items-center"><i
+                                class="fas fa-shipping-fast"></i><span>Shipped</span></div>
+                        <div class="d-flex flex-column align-items-end"><i
+                                class="fas fa-archive"></i><span>Delivered</span></div>
+                    </div>
+                {% elif one_product.status == "Cancelled" %}
+                    <div class="progress" style="width: 240px;">
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: 100%"
+                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+
+                    </div>
+                    <div class="d-flex flex-row justify-content-between align-items-center " style="width: 500px;">
+                        <div class="d-flex flex-column justify-content-center align-items-center">
+                            <span>Cancelled</span></div>
+                    </div>
+                {% endif %}
+                  </p>
+                  <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
+
+                  <div class="padding-top:10;">
+                    {% if one_product.user_cancelled != "True" and one_product.status != "Cancelled" and one_product.status != "Delivered" %}
+
+                        <a class="btn text-left" href="{% url 'cancel_order' one_product.id %}" onclick="return myFunction()" style="background-color: red;color:white;">Cancel Order</a>
+                    {% endif %}
+
+                        <a class="btn text-right" href="{% url 'productDetail' one_product.product.id %}"
+                            style="background-color: #ff4500;color:white;">Order Again</a>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+ 
+    </div>
+<!---------------------------------------------------------------------------------------------------------  IMAGE 1 ------------------------>
+
+<script>
+    function myFunction() {
+        return confirm("Are you sure to Cancel this Order ")
+    }
+</script>
+
+
+
+{% endblock content %}

@@ -17,9 +17,11 @@
                 <th>Product Image</th>
                 <th>Product Name</th>
                 <th>Category Name </th>
-                <!-- <th>Slug</th> -->
                 <th>Stock</th>
                 <th>Price</th>
+                <th>Offer Price</th>
+                <th>Offer Percentage</th>
+                <th>Offer Status</th>
                 <th>Availibility</th>
               
               </tr>
@@ -42,6 +44,21 @@
                 <!-- <td>{{ product.slug }}</td> -->
                 <td>{{ product.stock }}</td>
                 <td>{{ product.price }}</td>
+
+                {% if product.offer_price != None %}
+                  <td class="btn-outline-success ">{{ product.offer_price }}</td>
+                  <td class=" btn-outline-success ">{{ product.offer_percentage }}</td>
+                {% else %}
+                  <td class="btn-outline-danger ">{{ product.offer_price }}</td>
+                  <td class="btn-outline-danger ">{{ product.offer_percentage }}</td>
+                {% endif %}
+
+                {% if product.offer_status %}
+                <td >
+                    <p class=" btn-outline-success">Active</p></td>
+                {% else %}
+                <td><p class="btn-outline-danger">InActive</p></td>
+                {% endif %}
                
 
 

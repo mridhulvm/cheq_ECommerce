@@ -50,7 +50,18 @@
             <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <div class="d-flex flex-row align-items-center back"><i class="fa fa-long-arrow-left mr-1 mb-1"></i>
-                        <!-- <h6>Back to home</h6> -->
+
+                                <!-- ---------------------------------------REFERRAL FORM -->
+                                
+
+                                    <a  class="btn" id="referralGenerate" style="background-color: #ff4500;color:white; display:block;" >Get Referral</a>
+
+                                    <button class="btn  btn-block" id="copy_referal" style="background-color: #ff4500;color:white; display: none;width: 100%;" onclick="copyToClipboard()">Copy Referral</button>
+
+                                    <input type="text" class="form-control" name="myvalue"  id="referral_display"  style="display: none;" />
+
+
+                                <!-- ---------------------------------------END REFERRAL  FORM -->                    
                     </div>
                     <div class="mt-5 text-right"><a class="btn" href="{% url 'editAccountDetails' %}" type="button" style="background-color: #ff4500;color:white;">Edit Profile</a></div>
 
@@ -187,15 +198,11 @@
         
         cropped1.src = imgSrc1;
         $('#pro_img1').val(imgSrc1)
-       
-         
-       
-        
+                               
     });
 </script>
 
-
-<script>
+<script>//to hide and display save 
     function myFunction() {
       var x = document.getElementById("save");
       if (x.style.display === "none") {
@@ -204,6 +211,47 @@
         x.style.display = "none";
       }
     }
+    </script>
+    <!------=====================copy to clipboard-->
+    <script>
+
+    function copyToClipboard() {
+    var textBox = document.getElementById("referral_display");
+    textBox.select();
+    document.execCommand("copy");
+}
+    </script>
+
+<!---========================================Get referral===========-->
+<script>
+    $('#referralGenerate').click(function(){
+   
+
+   
+        $.ajax({
+            url:"{% url 'generateReferral' %}",  
+            method: 'GET',
+            data: {'data':1},
+            dataType: 'json',         
+            success: function (data) {
+  
+              console.log(data)  
+
+
+            $("#referral_display").css('display','block');
+            $('#referral_display').val(data.code)
+
+            $("#copy_referal").css('display','block');
+            $("#referralGenerate").css('display','none');
+             
+            },
+            error: function(error){
+              console.log("Ajax cant send data")
+            }
+        })
+      })
+
+
     </script>
 
 {% endblock content %}

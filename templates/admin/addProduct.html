@@ -1,9 +1,10 @@
 {% extends 'admin/base.html' %}
 
 {% load static %}
-{% load crispy_forms_tags %}
 
 {% block content %}
+
+{% include 'includes/alerts.html' %}
 
 <link href="{% static 'admin/crop/cropper.min.css' %}" rel="stylesheet" type="text/css"/>
 
@@ -12,34 +13,105 @@
 
 <link rel="stylesheet" href="https://unpkg.com/dropzone/dist/dropzone.css" />
 
-<div class="col-12 grid-margin stretch-card">
+<div class="col-md-6 grid-margin stretch-card mx-auto">
     <div class="card">
 
       <div class="card-body">
         <h4 class="card-title">{{table_name}}</h4>
         <!-- <p class="card-description"> Basic form elements </p> -->
+
+<!---======================================form starts===================-->        
         <form class="forms-sample"  method="POST" enctype="multipart/form-data">
-    
-          {% csrf_token %}
-          {{form|crispy}}          
-          <br>
-            <textarea name="pro_img1" id="pro_img1" style="display: none;"></textarea>
-           
-            <img src="" id="imageview1" style="height: auto;width: 100px;">
-          
+            {% csrf_token %}
 
-            <textarea name="pro_img2" id="pro_img2"  style="display: none;"></textarea>
-            <img src="" id="imageview2" style="height: auto;width: 100px;">
-         
-           
-            <textarea name="pro_img3" id="pro_img3" style="display: none;"></textarea>
-            <img src="" id="imageview3" style="height: auto;width: 100px;">
-        
+            <div class="form-group row">
+                  <label for="inputEmail3" class="col-sm-2 col-form-label">Product Name</label>
+                  <div class="col-sm-10">
+                    {{form.product_name}}      
+                </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">category Name</label>
+                    <div class="col-sm-10">
+                      {{form.category}}      
+                  </div>
+                  </div>
 
-            <textarea name="pro_img4" id="pro_img4" style="display: none;"></textarea>
-            <img src="" id="imageview4" style="height: auto;width: 100px;">
+                <div class="form-group row">
+                  <label for="inputPassword3" class="col-sm-2 col-form-label">Slug</label>
+                  <div class="col-sm-10">
+                    {{form.slug}}      
+                </div>
+                </div>
 
-        </br>
+                <div class="form-group row">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">Description</label>
+                    <div class="col-sm-10">
+                        {{form.description}}      
+                  </div>
+                  </div>
+                <div class="form-group row">
+                  <label for="inputPassword3" class="col-sm-2 col-form-label">Price ₹</label>
+                  <div class="col-sm-10">
+                    {{form.price}}       
+                </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">Stock</label>
+                    <div class="col-sm-10">
+                      {{form.stock}}       
+                  </div>
+                  </div>
+
+                <div class="form-group row">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">Image 1</label>
+                    <div class="col-sm-10">
+                        {{form.image1}}   
+                        <textarea name="pro_img1" id="pro_img1" style="display: none;"></textarea>           
+                        <img src="" id="imageview1" style="height: auto;width: 100px;">   
+                  </div>
+                  </div>  
+                  <div class="form-group row">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">Image2 </label>
+                    <div class="col-sm-10">
+                        {{form.image2}}    
+                        <textarea name="pro_img2" id="pro_img2"  style="display: none;"></textarea>
+                        <img src="" id="imageview2" style="height: auto;width: 100px;">  
+                  </div>
+                  </div>  
+                  <div class="form-group row">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">Image 3</label>
+                    <div class="col-sm-10">
+                        {{form.image3}}    
+                        <textarea name="pro_img3" id="pro_img3" style="display: none;"></textarea>
+                        <img src="" id="imageview3" style="height: auto;width: 100px;">    
+                  </div>
+                  </div>  
+                  <div class="form-group row">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">Image 4</label>
+                    <div class="col-sm-10">
+                      
+                        {{form.image4}}  
+                        <textarea name="pro_img4" id="pro_img4" style="display: none;"></textarea>
+                        <img src="" id="imageview4" style="height: auto;width: 100px;">     
+                  </div>
+                  </div>                                                                                        
+               
+                <div class="form-group row">
+                  <div class="col-sm-2">Availability</div>
+                  <div class="col-sm-10"> {{form.is_available}} 
+                    <div class="form-check">
+                            
+                      <label class="form-check-label" for="gridCheck1">
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+
+                    {{form.errors}}
+                 
 <!------------------------------------------------------------------------------------------------MODAL 1-->
         <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -64,7 +136,7 @@
                     </div>
                 </div>
             </div>
-        </div>     
+         
         
 <!------------------------------------------------------------------------------------------------MODAL 2-->
 <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog"
@@ -146,13 +218,16 @@
            </div>
        </div>
    </div>
+
+            <div class="form-group row">
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary ">Submit</button>
+                    <a href="{% url 'viewProduct' %}" class="btn btn-dark">Cancel</a>     
+               </div>
+            </div>
           
 
-
-
-
-          <button type="submit" class="btn btn-primary ">Submit</button>
-          <button class="btn btn-dark">Cancel</button>
+         
         </form>
       </div>
     </div>

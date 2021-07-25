@@ -89,9 +89,16 @@
 
                                     <span class="pd-detail__name">{{product.product_name}}</span></div>
                                 <div>
-                                    <div class="pd-detail__inline">
+                                    <div class="pd-detail__inline p-3">
 
-                                        <span class="pd-detail__price">₹{{ product.price }}</span>
+                                        {% if product.offer_status  %}
+                                            <span style="font-size: 2rem; font-weight: 700;"> ₹{{ product.offer_price }}  </span>
+                                            <span class="pd-detail__price"> <del >{{ product.price }}</del> {{ product.offer_percentage }}% OFF</span>
+                                      
+                                        {% else %}
+                                            <span class="pd-detail__price">₹{{ product.price }}</span>
+                                        {% endif %}
+
 
                                         <!-- <span class="pd-detail__discount">(76% OFF)</span>
                                         <del class="pd-detail__del">$28.97</del> -->
@@ -171,10 +178,12 @@
                                                 {% if product.stock <= 0 %}
                                                 <h3>Out of stock</h3>
                                                 {% elif in_cart %}
-                                                <a href="" class="btn btn-success" >In Cart</a></div>
+                                                <a  class="btn btn-success" >In Cart</a></div>
 
                                                 {% else %}
-                                                <a href="{% url 'add_cart' product.id %}"class="btn btn--e-brand-b-2" type="submit">Add to Cart</a></div>
+                                                <a id="in_cart_button"  class="btn btn-success" style="display: none;" >In Cart</a></div>
+
+                                                <a id="add_cart_button"  style="display: block;"  onclick="AddToCart('{{product.id}}')"  class="btn btn--e-brand-b-2" type="submit">Add to Cart</a></div>
                                                 {% endif%}
                                         </div>
                                     </form>
@@ -759,7 +768,37 @@
             <!--====== End - Section 1 ======-->
         </div>
         <!--====== End - App Content ======-->
+        <script>
+            function AddToCart(product_id)
+            {
+                console.log(product_id)
+                $.ajax({
+                url:"{% url 'add_cart_ajax'  %}",
+                method: 'GET',
+                data: {'product_id':product_id},
+                dataType: 'json',
+                success: function (data) {
+    
+                console.log(data)
+                if(data.status){         
+                    $('#add_cart_button').css("display", "none");                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+                    $('#in_cart_button').css("display", "block");
 
+                    $('#cart_count').html(data.cart_count) ;
+                     
+                               
+                }else{                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+    
+                    alert(data.message) ;   
+                }
+    
+                },
+                error: function(error){
+                  console.log("Ajax cant send data")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+                }
+            })//ajax end  
+            }
+        </script>
 
   
 {% endblock content %}

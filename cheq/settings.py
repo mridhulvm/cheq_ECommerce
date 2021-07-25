@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'product',
     'demo',
     'cart',
-    'orders'
+    'orders',
+    'referral',
 
 ]
 
@@ -87,18 +88,14 @@ WSGI_APPLICATION = 'cheq.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
+PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
 DATABASES = {
     'default': {
-          'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ecom_cheq',
-        'USER': 'postgres',
-        'PASSWORD': '123456',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(PROJECT_DIR, 'yourdatabasename.db'),
     }
 }
+
 
 
 # Password validation

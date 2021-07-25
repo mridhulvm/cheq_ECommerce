@@ -1,0 +1,81 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="col-lg-9 grid-margin stretch-card mx-auto">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Category Offers</h4>
+      
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>                                                                                                                            
+                <th>SL.no</th>
+                <th>Coupon</th>
+                <th>Coupon Offer</th>
+
+                <th>Coupon limit</th>
+                <th>Coupon Period</th>
+                <th>Coupon Status</th>
+                <th>Coupon Availability</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              {% for coupon in coupons  %}
+              <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{ coupon.coupon_title }}</td>
+                <td>{{ coupon.coupon_offer }}</td>
+                <td>{{ coupon.coupon_limit }}</td>
+
+                {% if coupon.check_expired_date_only %}
+
+                <td style="color: red;">{{coupon.coupon_start}}-{{coupon.coupon_end}}</td>
+                {% else %}
+                <td>{{coupon.coupon_start}}-{{coupon.coupon_end}}</td>
+                {% endif %}
+
+
+                {% if coupon.check_expired %}
+
+                <td><p class="btn btn-danger">InActive</p></td>
+                {% else %}
+                <td ><p class="btn btn-success">Active</p></td>
+                {% endif %}
+
+                {% if coupon.is_available == True %}
+                <td><a href="{% url 'availCoupon' coupon.id %}" class="btn btn-outline-success "><span class="glyphicon glyphicon-pencil" >  Available </span></a>
+                </td>
+                {% elif coupon.is_available  == False %}
+                <td><a href="{% url 'availCoupon' coupon.id %}" class="btn btn-outline-danger"><span class="glyphicon glyphicon-pencil" >UnAvailable</span></a>
+                </td>
+                {% endif %}
+                
+                <td><a href="{% url 'editCoupon' coupon.id %}" class="btn btn-outline-success"><span class="glyphicon glyphicon-pencil" >Edit</span></a>
+                <!-- <td><a href="{% url 'deleteCoupon' coupon.id %}" onclick="return myCategoryFunction()"  class="btn btn-outline-danger"><span class="glyphicon glyphicon-pencil" >  Delete </span></a> -->
+         
+                
+
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  
+  <script>
+      
+
+    function myCouponFunction() {
+
+      return confirm("Confirm Deleting Coupon")
+    }
+    </script>
+
+{% endblock content %}

@@ -1,0 +1,25 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+  <!--------------------------------------------------------Product-->
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">{{table_name1}}</h4>
+        <!-- <p class="card-description"> Basic form elements </p> -->
+        <form class="forms-sample"  method="POST" enctype="multipart/form-data">
+    
+          {% csrf_token %}
+          {{ProductForm|crispy}}
+          {{ProductForm.errors}}
+
+          <button type="submit" class="btn btn-primary mr-2">Submit</button>
+          <button class="btn btn-dark">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

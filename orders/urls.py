@@ -3,6 +3,8 @@ from . import views
 
 urlpatterns = [
     path('placeOrder',views.placeOrder,name='placeOrder'),
+    path('checkCoupon',views.checkCoupon,name='checkCoupon'),
+
     path('payments/<int:order_number>',views.payments,name='payments'),
 
     path('paypal',views.paypal,name='paypal'),

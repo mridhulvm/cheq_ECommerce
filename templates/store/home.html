@@ -147,7 +147,7 @@
                 <!--====== Tab 1 ======-->
                 <div class="tab-pane" id="w-l-p">
                     <div class="slider-fouc">
-                        <div class="owl-carousel tab-slider" data-item="4">
+                        <div class="owl-carousel tab-slider" data-item="5">
                             {% for product in products %}
 
                             <div class="  u-s-m-b-30">
@@ -164,7 +164,7 @@
                                                     <a data-modal="modal" data-modal-id="#quick-look" data-tooltip="tooltip" data-placement="top" title="Quick View"><i class="fas fa-search-plus"></i></a>
                                                 </li> -->
                                                 <li>
-                                                    <a data-modal="modal" href="{% url 'add_cart' product.id %}"  data-tooltip="tooltip" data-placement="top" title="Add to Cart"><i class="fas fa-shopping-cart"></i></a>
+                                                    <a data-modal="modal"  onclick="AddToCart('{{product.id}}')" data-tooltip="tooltip" data-placement="top" title="Add to Cart"><i class="fas fa-shopping-cart"></i></a>
                                                 </li>
                                                 <li>
 
@@ -190,10 +190,11 @@
 
                                         <span class="product-o__review">(0)</span>
                                     </div> -->
-
-                                    <span class="product-o__price">₹{{ product.price }}
-
-                                        <!-- <span class="product-o__discount">$160.00</span></span> -->
+                                    {% if product.offer_status  %}
+                                       <span class="product-o__price">₹{{ product.offer_price }} <del style="color: tomato;">₹{{ product.price }}</del> <span style="color:#fa4400;"> {{ product.offer_percentage }}% OFF</span></span>
+                                    {% else %}
+                                    <span class="product-o__price">₹{{ product.price }}</span>
+                                    {% endif %}
                                 </div>
                             </div>
 
@@ -209,4 +210,35 @@
     </div> -->
     <!--====== End - Section Content ======-->
     <!-- </div> -->
+    <!-- Card -->
+    <script>
+        function AddToCart(product_id)
+        {
+            console.log(product_id)
+            $.ajax({
+            url:"{% url 'add_cart_ajax'  %}",
+            method: 'GET',
+            data: {'product_id':product_id},
+            dataType: 'json',
+            success: function (data) {
+
+            console.log(data)
+            if(data.status){         
+
+                $('#cart_count').html(data.cart_count) ;
+                alert(data.message) ;   
+                           
+            }else{
+
+                alert(data.message) ;   
+            }
+
+            },
+            error: function(error){
+              console.log("Ajax cant send data")
+            }
+        })//ajax end  
+        }
+    </script>
+
 {% endblock content %}

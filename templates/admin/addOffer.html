@@ -1,0 +1,91 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% include 'includes/alerts.html' %}
+
+<!---------------------------------------------------------Category-->
+<div class="col-6 grid-margin stretch-card mx-auto">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">{{table_name1}}</h4>
+        <!-- <p class="card-description"> Basic form elements </p> -->
+        <form class="forms-sample"  method="POST" enctype="multipart/form-data">
+    
+          {% csrf_token %}
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-2 col-form-label">Category </label>
+            <div class="col-sm-10">
+              {{Categoryform.category}}      
+          </div>
+          </div>    
+
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-2 col-form-label">Category Offer</label>
+            <div class="col-sm-10">
+              {{Categoryform.offer}}      
+          </div>
+          </div>   
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-2 col-form-label">Offer Start Date</label>
+            <div class="col-sm-10">
+              {{Categoryform.offer_start}}      
+          </div>
+          </div>  
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-2 col-form-label">Offer End Date</label>
+            <div class="col-sm-10">
+              {{Categoryform.offer_end}}      
+          </div>
+          </div>                      
+
+          {{Categoryform.errors}}
+          <button type="submit" class="btn btn-primary mr-2">Submit</button>
+          <button class="btn btn-dark">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!--------------------------------------------------------Product-->
+  <div class="col-6 grid-margin stretch-card mx-auto">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">{{table_name2}}</h4>
+        <!-- <p class="card-description"> Basic form elements </p> -->
+        <form class="forms-sample"  method="POST" enctype="multipart/form-data">
+    
+          {% csrf_token %}
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-2 col-form-label">Offer End Date</label>
+            <div class="col-sm-10">
+              {{ProductForm.product}}      
+          </div>
+          </div>  
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-2 col-form-label">Offer End Date</label>
+            <div class="col-sm-10">
+              {{ProductForm.offer}}      
+          </div>
+          </div> 
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-2 col-form-label">Offer End Date</label>
+            <div class="col-sm-10">
+              {{ProductForm.offer_start}}      
+          </div>
+          </div> 
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-2 col-form-label">Offer End Date</label>
+            <div class="col-sm-10">
+              {{ProductForm.offer_end}}      
+          </div>
+          </div>                                        
+          {{ProductForm.errors}}
+
+          <button type="submit" class="btn btn-primary mr-2">Submit</button>
+          <button class="btn btn-dark">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

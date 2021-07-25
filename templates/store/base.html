@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link href="images/favicon.png" rel="shortcut icon">
+    <link href="" rel="shortcut icon">
     <title>CheQ</title>
 
     <!--====== Google Font ======-->
@@ -24,13 +24,24 @@
 
      <!--====== Button listing in orders,account,address ======-->
      <link rel="stylesheet" href="{% static 'store/css/buttonList.css' %}">
+
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js" integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    
 
 </head>
 <body class="config" id="js-scrollspy-trigger">
+    <style>
+        .navbar-fixed-top {
+    top: 0;
+    border-width: 0 0 1px;
+}
+    </style>
     <div class="preloader is-active">
         <div class="preloader__wrap">
 
@@ -75,11 +86,11 @@
 
 
             <!--====== Nav 2 ======-->
-            <nav class="secondary-nav-wrapper">
-                <div class="container" style="height: 100px">
+            <nav  class="secondary-nav-wrapper  fixed-top " style="background-color: #000000;">
+                <div id="navbar" class="container" style="height: 100px">
 
                     <!--====== Secondary Nav ======-->
-                    <div class="secondary-nav">
+                    <div  class="secondary-nav">
 
                         <!--====== Dropdown Main plugin ======-->
                         <div class="menu-init" id="navigation1">
@@ -100,12 +111,12 @@
                                         <!--====== Mega Menu ======-->
 
                                         <span class="js-menu-toggle"></span>
-                                        <div class="mega-menu">
+                                        <div  class="mega-menu">
                                             <div class="mega-menu-wrap">
                                                 <div class="mega-menu-list">
                                                     <ul>
 
-                                                        {% for category in categories %}
+                                                        <!-- {% for category in categories %}
                                                         <li class="js-active">
 
                                                             <a href=""><i class=" u-s-m-r-6"></i>
@@ -115,7 +126,7 @@
 
                                                             <span class="js-menu-toggle js-toggle-mark"></span></li>
                                                         
-                                                            {% endfor %}
+                                                            {% endfor %} -->
 
                                                        
                                                     </ul>
@@ -202,9 +213,9 @@
                                                         <div class="col-lg-9 mega-image">
                                                             <div class="mega-banner">
 
-                                                                <a class="u-d-block" href="shop-side-version-2.html">
+                                                                <a class="u-d-block" href="">
 
-                                                                    <img class="u-img-fluid u-d-block" src="images/banners/banner-mega-0.jpg" alt=""></a></div>
+                                                                    <img class="u-img-fluid u-d-block" src="" alt=""></a></div>
                                                         </div>
                                                     </div>
                                                     <!--====== End - Mega Menu Row ======-->
@@ -236,14 +247,12 @@
 
 
                         <!--====== Search Form ======-->
-                        <form class="main-form">
+                      
+                            <!-- <input class="input-text input-text--border-radius input-text--style-2" type="text" id="main-search" placeholder="Search">
 
-                            <div class="row">
-                            <input class="input-text input-text--border-radius input-text--style-2" type="text" id="main-search" placeholder="Search">
-
-                            <button class="btn btn-primary " type="submit" >Search</button>
-                            </div>
-                        </form>
+                            <input class="btn btn-primary" type="submit" >Search</input> -->
+                            <input class="input-text input-text--border-radius input-text--style-2" style="max-width: 100%;"  type="text"   placeholder="Search" /><input class="btn btn-primary" type="submit"value="Search" />
+                          
                         <!--====== End - Search Form ======-->
 
 
@@ -252,7 +261,7 @@
 
 
                         <!--====== Dropdown Main plugin ======-->
-                        <div class="menu-init" id="navigation3">
+                        <div class="menu-init" >
 
                            
 
@@ -281,7 +290,7 @@
                                     <li >
                                         <!-- class="has-dropdown" -->
                                         
-                                        <a  href="{% url 'cart' %}" ><i class="fas fa-shopping-bag"></i><span> Cart <sup  href="{% url 'cart' %}" class="badge badge-pill badge-dark notify" style="color:white">{{ cart_count}}</sup>
+                                        <a  href="{% url 'cart' %}" ><i class="fas fa-shopping-bag"></i><span> Cart <sup  href="{% url 'cart' %}" id="cart_count" class="badge badge-pill badge-dark notify" style="color:white">{{ cart_count}}</sup>
                                        </span> 
                                            
                                            
@@ -372,11 +381,13 @@
 
                                                     <span>Signin</span></a></li>
                                             {% endif %}
+                                            {% if user.is_authenticated %}
                                             <li>
 
                                                 <a href="{% url 'signout' %}"><i class="fas fa-lock-open u-s-m-r-6"></i>
 
                                                     <span>Signout</span></a></li>
+                                           {% endif %}
                                         </ul>
                                         <!--====== End - Dropdown ======-->
                                     </li>
@@ -472,19 +483,19 @@
                                             <ul>
                                                 <li>
 
-                                                    <a href="cart.html">Cart</a></li>
+                                                    <a href="">Cart</a></li>
                                                 <li>
 
-                                                    <a href="dashboard.html">Account</a></li>
+                                                    <a href="">Account</a></li>
                                                 <li>
 
-                                                    <a href="shop-side-version-2.html">Manufacturer</a></li>
+                                                    <a href="">Manufacturer</a></li>
                                                 <li>
 
-                                                    <a href="dash-payment-option.html">Finance</a></li>
+                                                    <a href="">Finance</a></li>
                                                 <li>
 
-                                                    <a href="shop-side-version-2.html">Shop</a></li>
+                                                    <a href="">Shop</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -497,19 +508,19 @@
                                             <ul>
                                                 <li>
 
-                                                    <a href="about.html">About us</a></li>
+                                                    <a href="">About us</a></li>
                                                 <li>
 
-                                                    <a href="contact.html">Contact Us</a></li>
+                                                    <a href="">Contact Us</a></li>
                                                 <li>
 
-                                                    <a href="index-2.html">Sitemap</a></li>
+                                                    <a href="">Sitemap</a></li>
                                                 <li>
 
-                                                    <a href="dash-my-order.html">Delivery</a></li>
+                                                    <a href="">Delivery</a></li>
                                                 <li>
 
-                                                    <a href="shop-side-version-2.html">Store</a></li>
+                                                    <a href="">Store</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -620,38 +631,38 @@
                                         <div id="js-product-detail-modal">
                                             <div>
 
-                                                <img class="u-img-fluid" src="images/product/product-d-1.jpg" alt=""></div>
+                                                <img class="u-img-fluid" src="" alt=""></div>
                                             <div>
 
-                                                <img class="u-img-fluid" src="images/product/product-d-2.jpg" alt=""></div>
+                                                <img class="u-img-fluid" src="" alt=""></div>
                                             <div>
 
-                                                <img class="u-img-fluid" src="images/product/product-d-3.jpg" alt=""></div>
+                                                <img class="u-img-fluid" src="" alt=""></div>
                                             <div>
 
-                                                <img class="u-img-fluid" src="images/product/product-d-4.jpg" alt=""></div>
+                                                <img class="u-img-fluid" src="" alt=""></div>
                                             <div>
 
-                                                <img class="u-img-fluid" src="images/product/product-d-5.jpg" alt=""></div>
+                                                <img class="u-img-fluid" src="" alt=""></div>
                                         </div>
                                     </div>
                                     <div class="u-s-m-t-15">
                                         <div id="js-product-detail-modal-thumbnail">
                                             <div>
 
-                                                <img class="u-img-fluid" src="images/product/product-d-1.jpg" alt=""></div>
+                                                <img class="u-img-fluid" src="" alt=""></div>
                                             <div>
 
-                                                <img class="u-img-fluid" src="images/product/product-d-2.jpg" alt=""></div>
+                                                <img class="u-img-fluid" src="" alt=""></div>
                                             <div>
 
-                                                <img class="u-img-fluid" src="images/product/product-d-3.jpg" alt=""></div>
+                                                <img class="u-img-fluid" src="" alt=""></div>
                                             <div>
 
-                                                <img class="u-img-fluid" src="images/product/product-d-4.jpg" alt=""></div>
+                                                <img class="u-img-fluid" src="" alt=""></div>
                                             <div>
 
-                                                <img class="u-img-fluid" src="images/product/product-d-5.jpg" alt=""></div>
+                                                <img class="u-img-fluid" src="" alt=""></div>
                                         </div>
                                     </div>
                                 </div>
@@ -787,7 +798,7 @@
                                         <span>Item is added successfully!</span></div>
                                     <div class="success__img-wrap">
 
-                                        <img class="u-img-fluid" src="images/product/electronic/product1.jpg" alt=""></div>
+                                        <img class="u-img-fluid" src="" alt=""></div>
                                     <div class="success__info-wrap">
 
                                         <span class="success__name">Beats Bomb Wireless Headphone</span>
@@ -886,9 +897,24 @@
 
     <!--====== App ======-->
     <script src="{% static 'store/js/app.js' %}"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<!--========================sticky navbar=====================-->
+<script>
+    window.onscroll = function() {myFunction()};
+    
+    var navbar = document.getElementById("navbar");
+    var sticky = navbar.offsetTop;
+    
+    function myFunction() {
+      if (window.pageYOffset >= sticky) {
+        navbar.classList.add("sticky")
+      } else {
+        navbar.classList.remove("sticky");
+      }
+    }
+    </script>
+    <!--========================sticky navbar ends=====================-->
 
     <!--====== Noscript ======-->
     <noscript>

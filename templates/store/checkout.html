@@ -16,10 +16,10 @@
                         <ul class="breadcrumb__list">
                             <li class="has-separator">
 
-                                <a href="">Home</a></li>
+                                <a >Home</a></li>
                             <li class="is-marked">
 
-                                <a href="">Cart</a></li>
+                                <a href="">Checkout</a></li>
                         </ul>
                     </div>
                 </div>
@@ -27,10 +27,98 @@
         </div>
     </div>
     <!--====== End - Section 1 ======-->
+    
+    <!----=======================ADDRESSES=====-->
+    <div class="row">
+        <aside class="col-lg-12">
+    <div class="card">
+        <h4 style="block-size: 10px;" class="mx-auto">Adress Selection</h4>
+        <div class="card-body" style="overflow-y: scroll; height: 250px; overflow-x:hidden;">
+
+  
+            
+            <!------------------------------USER ADDRESSES------->
+        {% for address in addresses %}
+        <input type="radio"   name="address" value="{{address.id}}">
+
+            <label id="{{address.id}}address_name"  style="font-weight: bold;" >{{address.address_name}}</label>
+
+        <div class="row header ">
+            <div class="my-auto">
+
+            <p  style="padding-right: 2000px;">
+                <div>
+                <span style="font-weight: bold;" >  Name:</span>
+                <span id="{{address.id}}first_name">{{address.first_name}} </span> 
+                <span id="{{address.id}}last_name">{{address.last_name}}</span>
+              
+                 <span style="font-weight: bold;" > Email: </span>
+                 <span id="{{address.id}}email">{{address.email}}</span>
+               
+                 <span style="font-weight: bold;">Phone : </span> 
+                 <span id="{{address.id}}phone">{{address.phone}} </span>
+                </div>
+                    <div>
+                     <span style="font-weight: bold;">Address:</span> 
+                     <span id="{{address.id}}address_line1">{{address.address_line1}} </span>
+                     <span id="{{address.id}}address_line2">{{address.address_line2}} </span>
+                   
+                     <span style="font-weight: bold;"> PIN: </span> 
+                     <span id="{{address.id}}pin">{{address.pin}} </span>
+                     <span id="{{address.id}}city">{{address.city}}  </span>
+                     <span id="{{address.id}}state">{{address.state}}</span>
+                    </div>
+                     </p>
+            </div>
+            <div class="text-right">
+                <a href="{% url 'editAddress' address.id %}"  class="btn text-right " style="background-color: #ff4500;color:white; " >Edit</a>
+            </div>
+        </div>
+      
+        {% endfor %}
+        <br>
+        <!----------------------------USER ADDRESSES END-->
+
+            
+                  <!----------------------ADD ANOTHER ADDRESS----->
+                  <input type="radio"   name="address" value="default">
+
+                  <label>Add another Address</label><br>
+          
+                  <div class="row header   pd-4">
+                  <label for="{{address.id}}" > </label>
+                  <div class="my-auto">
+          
+                      <p  >
+          
+                          <span id="defaultfirst_name"> </span> 
+                          <span id="defaultlast_name"></span>
+          
+                           <span id="defaultemail"></span>
+          
+                           <span id="defaultphone"></span>
+                          </p>
+          
+                           <p style="padding-right: 150px;">
+          
+                               <span id="defaultaddress_line1"></span>
+                               <span id="defaultaddress_line2"></span>
+          
+                               <span id="defaultpin"></span>
+                               <span id="defaultcity"></span>
+                               <span id="defaultstate"></span>
+                               </p>
+                  </div>
+                  <br>
+                  <!-----------------------------ADD ANOTHER ADDRESS END--->                                                
+            
+    </div>
 
 
+    </div>
 
 
+    <!----======================= END ADDRESSES=====-->
 
     <section class="section-content padding-y bg">
         <div class="container">
@@ -45,19 +133,29 @@
         
             
         <h4 class="card-title mb-4">Billing Address</h4>
-        
-        <form action="{% url 'placeOrder' %}" method="POST">
-            {% csrf_token %}
+            <div class="form-row">
+                <div class="col form-group">
+
+                  <!--====================================================FORM STARTING====================-->
+                    <form action="{% url 'placeOrder' %}" method="POST">
+                        {% csrf_token %}
+                        
+                    <label for="">Address Name</label>
+                    <input type="text" name="address_name" id="address_name" class="form-control" value="" required>
+                </div>
+                
+            </div>
+      
             <div class="form-row">
                 <div class="col form-group">
         
                     <label for="">First Name</label>
-                    <input type="text" name="first_name" id="firstname" class="form-control" required>
+                    <input type="text" name="first_name" id="first_name" class="form-control" value="" required>
                 </div>
                 <div class="col form-group">
         
                     <label for="">Last Name</label>
-                    <input type="text" name="last_name" id="lastname" class="form-control" required>
+                    <input type="text" name="last_name" id="last_name" class="form-control" required>
                 </div>
             </div>
             <div class="form-row">
@@ -76,13 +174,21 @@
                 <div class="col form-group">
         
                     <label for="">Address Line 1</label>
-                    <input type="text" name="address1" id="address1" class="form-control" required>
+                    <input type="text" name="address1" id="address_line1" class="form-control" required>
                 </div>
                 <div class="col form-group">
         
                     <label for="">Address Line 2</label>
-                    <input type="text" name="address2" id="address2" class="form-control">
+                    <input type="text" name="address2" id="address_line2" class="form-control">
                 </div>
+            </div>
+            <div class="form-row">
+                <div class="col form-group">
+        
+                    <label for="">Pin</label>
+                    <input type="text" name="pin" id="pin" class="form-control" required>
+                </div>
+         
             </div>
             
             <div class="form-row">
@@ -116,12 +222,25 @@
             
         
         </div>
+ 
         
         
         </div> <!-- card.// -->
+ 
         
             </aside> <!-- col.// -->
+           
             <aside class="col-lg-6">
+    <!---===========================================================COUPON==========-->
+                <br>
+                <div class="form-group ">
+                  <label for="coupon_title" class="sr-only">Enter Coupon</label>
+                  <input type="text" class="form-control " name="coupon_title" id="coupon_title" placeholder="Place Your Coupons">
+                  <p id="display_coupon"></p>
+                </div>
+                <a  class="btn  mb-3"  id="coupon"  style="background-color: #ff4500;text-decoration-color: thistle;" >Check Coupon</a>
+    
+    <!--=============================================================COUPON============-->   
         
                 <div class="card">
                 <div class="card-body">
@@ -155,11 +274,11 @@
                                     <!--====== Input Counter ======-->
                                     <div class="input-counter">
 
-                                        <a href="{% url 'minus_checkout' cart_item.product.id %}" class="input-counter__minus fas fa-minus"></a>
+                                        <!-- <a href="{% url 'minus_checkout' cart_item.product.id %}" class="input-counter__minus fas fa-minus"></a> -->
 
-                                        <input class="input-counter__text input-counter--text-primary-style" type="text" value="{{ cart_item.quantity}}" data-min="1" data-max="1000">
+                                        <input class="input-counter__text input-counter--text-primary-style" type="text" value="{{ cart_item.quantity}}" data-min="1" data-max="1000" disabled>
 
-                                        <a href="{% url 'add_checkout' cart_item.product.id %}" class="input-counter__plus fas fa-plus"></a></div>
+                                        <!-- <a href="{% url 'add_checkout' cart_item.product.id %}" class="input-counter__plus fas fa-plus"></a></div> -->
                                     <!--====== End - Input Counter ======-->
                                 </div>
                             </td>
@@ -177,10 +296,10 @@
                         {% endfor %}
                         <table class="f-cart__table">
                             <tbody>
-                                <!-- <tr>
-                                    <td>SHIPPING</td>
-                                    <td>₹4.00</td>
-                                </tr> -->
+                                <tr>
+                                    <td>COUPON OFFER</td>
+                                    <td>-₹<span  id="coupon_price">00</span> </td>
+                                </tr>
                                 <tr>
                                     <td>SUBTOTAL</td>
                                     <td>₹{{total}}</td>
@@ -192,7 +311,7 @@
                                
                                 <tr>
                                     <td>GRAND TOTAL</td>
-                                    <td>₹{{grand_total}}</td>
+                                    <td > ₹ <span id="grand_total">{{grand_total}} </span> </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -229,6 +348,91 @@
         </div> <!-- container .//  -->
         </section>
         <!-- ========================= SECTION CONTENT END// ========================= -->
+        
+
+		<script>
+
+
+                $("input[type='radio']").click(function (){
+
+                    var address=$(this).val()
+
+                    var addressName = $("#"+address+"address_name").html()
+                    $("#address_name").val(addressName)
+
+                    var firstName = $("#"+address+"first_name").html()
+                    $("#first_name").val(firstName)
+
+                    var lastName = $("#"+address+"last_name").html()
+                    $("#last_name").val(lastName)
+
+                    var Email = $("#"+address+"email").html()
+                    $("#email").val(Email)
+
+                    var Phone = $("#"+address+"phone").html()
+                    $("#phone").val(Phone)
+
+                    var Address_line1 = $("#"+address+"address_line1").html()
+                    $("#address_line1").val(Address_line1)
+
+                    var Address_line2 = $("#"+address+"address_line2").html()
+                    $("#address_line2").val(Address_line2)
+
+                    var City = $("#"+address+"city").html()
+                    $("#city").val(City)
+
+                    var State = $("#"+address+"state").html()
+                    $("#state").val(State)
+
+                    var Pin = $("#"+address+"pin").html()
+                    $("#pin").val(Pin)
+
+                   
+                  
+                    console.log(address)
+
+                    })
+		</script>
+
+
+<!---========================================Check Coupon===========-->
+<script>
+    $('#coupon').click(function(){
+    var coupon=$('#coupon_title').val()
+    var GrandTotal= "{{grand_total}}"
+
+    
+        $.ajax({
+            url:"{% url 'checkCoupon' %}",
+            method: 'GET',
+            data: {'data':coupon,'grand_total':GrandTotal},
+            dataType: 'json',
+            success: function (data,grand_total) {
+  
+              console.log(data)
+             
+              
+              
+              if(data.status){
+                $('#display_coupon').html(data.message)
+              }
+              else
+              {
+                  $('#display_coupon').html(data.message)
+                  $('#grand_total').html(data.grand_total)
+                  $('#coupon_price').html(data.coupon_price)
+
+              }
+             
+            },
+            error: function(error){
+              console.log("Ajax cant send data")
+            }
+        })
+      })
+
+
+    </script>
 
 
 {% endblock content %}

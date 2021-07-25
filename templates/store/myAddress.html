@@ -24,26 +24,72 @@
         <div class="col-md-8">
             <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div class="d-flex flex-row align-items-center back"><i class="fa fa-long-arrow-left mr-1 mb-1"></i>
+                    <div class="d-flex flex-row align-items-center back "><i class="fa fa-long-arrow-left mr-1 mb-1"></i>
                         <!-- <h6>Back to home</h6> -->
                     </div>
-                    <div class="mt-5 text-right"><a class="btn" href="{% url 'editAccountDetails' %}" type="button" style="background-color: #ff4500;color:white;">Add Address</a></div>
+                    <div class="mt-5 text-right  border-bottom">
+                        <a class="btn" href="{% url 'addAddress' %}" type="button" style="background-color: #ff4500;color:white;">Add Address</a></div>
 
-                    <div class="mt-5 text-right"><a class="btn" href="{% url 'editAccountDetails' %}" type="button" style="background-color: #ff4500;color:white;">Edit Address</a></div>
 
                 </div>
-                <div class="row mt-2">
-                    <label  class="font-weight-bold"  for="">Name  </label>
-
-                    <div class="col-md-6">      {{user.first_name}} {{user.last_name}}</div>
+                {% for address in addresses %}
+                <div class="row header   pd-4">
+                    <label ><h3>{{address.address_name}}</h3></label>
+                    <div class="col-md-6  text-right">
+                        <a href="{% url 'editAddress' address.id %}"  class="btn text-right " style="background-color: #ff4500;color:white;" >Edit</a>
+                    </div>
                 </div>
-              
+
+                <div class="row mt-2 bold">
+                
+                    <div class="col-md-6">
+                        <p>{{address.first_name}} {{address.last_name}}</p></div>
+                   
+                </div>
+                
+                    <div class="row mt-3 bold  ">
+                        <div class="col-md-6">
+                            <p>{{address.email}}</p></div>
+                        <div class="col-md-6">
+                            <p>{{address.phone}}</p></div>
+            
+                        <div class="col-md-6">
+                            <p>{{address.address_line1}} {{address.address_line2}}</p></div>
+                    
+                    
+                        <div class="col-md-6">
+                            <p>PIN: {{address.pin}}</p></div>                   
+                    
+                    </div>
+
+                    <div class="row mt-2 bold border-bottom">
+                    
+                        <div class="col-md-6">
+                            <p>{{address.city}}  {{address.state}}</p></div>
+                    
+                    </div>
+                
+
+                  
+                {% endfor %}
+
+
+                        
              
             </div>
         </div>
     </div>
 </div>
-                
+    <style>
+        .bold{
+            font-weight: bold;
+        }
+        .header{
+          
+            padding-top: 35px;
+        }
+      
+    </style>         
 
 
 {% endblock content %}
