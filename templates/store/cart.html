@@ -202,7 +202,7 @@
                                         </div>
                                         <div  >
 
-                                            <a  href="{% url 'checkout' %}" class="btn btn--e-brand-b-2" type="submit"> PROCEED TO CHECKOUT</a></div>
+                                            <a  href="{% url 'checkout' %}" onclick="return valueCheck()" class="btn btn--e-brand-b-2" type="submit"> PROCEED TO CHECKOUT</a></div>
                                     </div>
                                 </div>
                             </div>
@@ -220,6 +220,17 @@
 <script>
     function deleteFunction() {
       return confirm("Confirm Deletion ")
+    }
+    function valueCheck(){
+        var grand_total='{{grand_total}}'
+         if (grand_total == 0){
+            alert("Cart Empty")
+
+             return false
+         }
+         else{
+             return true
+         }
     }
 </script>
 <!--=======================ajax=======-->

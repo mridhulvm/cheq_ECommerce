@@ -116,6 +116,13 @@
               <form action="{% url 'payments' order.order_number %}" method="POST" >
                 {% csrf_token %}
 
+                <h5 >Paypal</h5>
+                <label>
+                    <input type="radio" name="payment-option" value="paypal" checked="checked">
+                    <img src="{% static 'store/payments/paypal_mark.jpg' %}" alt="Pay with Paypal">
+                </label>
+                <hr>
+
               <h5 >Cash On Delivery</h5>
 
             <input type="radio" id="cash_on_delivery" name="payment-option" value="cash_on_delivery">
@@ -123,12 +130,7 @@
             <hr>  
 
 
-            <h5 >Paypal</h5>
-            <label>
-                <input type="radio" name="payment-option" value="paypal" >
-                <img src="{% static 'store/payments/paypal_mark.jpg' %}" alt="Pay with Paypal">
-            </label>
-            <hr>
+
 
             <h5 >Razorpay</h5>
             <label>
@@ -233,10 +235,10 @@
                         
                         </tbody>
                         </table>
-                    <input type="submit" name="submit" value="Cash on Delivery" class="btn btn-warning btn-block" style="background: #ff4500;" >
+                    <input id="cash_on_delivery_button"  type="submit" name="submit" value="Cash on Delivery" class="btn btn-warning btn-block" style="background: #ff4500;display: none;" >
                 </form>
 <!--------------------------------------------------------------------------------------------------------------------------------------------------------RAZORPAY-->
-                <div class="center">
+                <div class="center" id="razorpay_button" style="display: none;" >
                 <form action="{% url 'razorpay' order.order_number %}" method="POST" >{% csrf_token %}
                     <script
                         console.log(amount)
@@ -260,7 +262,7 @@
                 <div id="paypal-button-container"></div>
                 <div id="card-button-container" class="hidden btn btn-warning btn-block" style="background: #ff4500;"><button>Cards</button></div>
                 
-                    <a href="{% url 'home' %}" class="btn btn-light btn-block">Continue Shopping</a>
+                    <!-- <a href="{% url 'home' %}" class="btn btn-light btn-block" style="background: orange;">Continue Shopping</a> -->
         
                 
                 <br>
@@ -319,14 +321,36 @@
                 // If PayPal is selected, show the PayPal button
                 if (event.target.value === 'paypal') {
                     document.querySelector('#card-button-container').style.display = 'none';
-                    document.querySelector('#paypal-button-container').style.display = 'inline-block';
+                    document.querySelector('#paypal-button-container').style.display = 'block';
+                    document.querySelector('#cash_on_delivery_button').style.display = 'none';
+                    document.querySelector('#razorpay_button').style.display = 'none';
+
                 }
 
                 // If Card is selected, show the standard continue button
                 if (event.target.value === 'card') {
                     document.querySelector('#card-button-container').style.display = 'inline-block';
                     document.querySelector('#paypal-button-container').style.display = 'none';
+                    document.querySelector('#cash_on_delivery_button').style.display = 'none';
+                    document.querySelector('#razorpay_button').style.display = 'none';
+
                 }
+                //cash on delivery
+                if (event.target.value === 'cash_on_delivery') {
+                    document.querySelector('#card-button-container').style.display = 'none';
+                    document.querySelector('#paypal-button-container').style.display = 'none';
+                    document.querySelector('#cash_on_delivery_button').style.display = 'inline-block';
+                    document.querySelector('#razorpay_button').style.display = 'none';
+
+                }  
+                //razorpay      
+                if (event.target.value === 'razorpay') {
+                    document.querySelector('#card-button-container').style.display = 'none' ;
+                    document.querySelector('#paypal-button-container').style.display = 'none';
+                    document.querySelector('#cash_on_delivery_button').style.display = 'none';
+                    document.querySelector('#razorpay_button').style.display = 'inline-block';
+
+                }                
             });
         });
 

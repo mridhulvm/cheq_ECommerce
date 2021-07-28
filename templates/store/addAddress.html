@@ -29,53 +29,71 @@
                     </div>
 
                 </div> 
-                <form class="forms-sample"  method="POST" action="{% url 'addAddress' %}">
-    
-                    {% csrf_token %}
+               
                     
                 <div class="row mt-2">
                     <div class="col-md-12">
 
                     <label ><h4>Address Name</h4></label>
-                    <input type="text" class="form-control" placeholder="Address Name" name="address_name" value="">
+                    <input type="text" class="form-control" placeholder="Address Name" name="address_name" id="address_name" value="" required>
                     </div>
                 </div>
                 
                 <div class="row mt-2">
                 
                     <div class="col-md-6">
-                        <label ><h4>First Name</h4></label>
-                        <input type="text" class="form-control" placeholder="First Name" name="first_name" value=""></div>
+                        <label for="">First Name</label>
+                        <input type="text" name="first_name" onkeyup="first_name_validate()" id="first_name" class="form-control" value="" >
+                        <p style="color:red" id="first_name_error"></p>
+                    </div>
                     <div class="col-md-6">
-                        <label ><h4>Last Name</h4></label>
-                        <input type="text" class="form-control" placeholder="Last Name" value="" name="last_name" ></div>
+                        <label for="">Last Name</label>
+                    <input type="text" name="last_name" onkeyup="last_name_validate()" id="last_name" class="form-control" >
+                    <p style="color:red" id="last_name_error"></p>
+
+                    </div>
                 </div>
                 
                 <div class="row mt-3">
                     <div class="col-md-6">
-                        <label ><h4>Email</h4></label>
-                        <input type="email" class="form-control" placeholder="Email" name="email" value=""></div>
+                        <label for="">Email</label>
+                        <input type="text" name="email" id="email" onkeyup="emailvalidate()" class="form-control" >
+                        <p style="color:red" id="email_error"></p>
+    
+                    </div>
                     <div class="col-md-6">
-                        <label ><h4>Phone Number</h4></label>
-                        <input type="tel" class="form-control" placeholder="Phone Number" value="" name="phone_number"></div>
+                     
+                    <label for="">Phone Number</label>
+                    <input type="tel" name="phone" onkeyup="phonevalidation()" id="phone" class="form-control" >
+                    <p style="color:red" id="phone_number_error"></p>
+
+                    </div>
                 </div>
                 
                 <div class="row mt-3">
                     <div class="col-md-6">
                         <label ><h4>Address Line1</h4></label>
-                        <input type="text" class="form-control" placeholder="Address Line1" name="address_line1" value=""></div>
+                        <input type="text" id="address_line1" class="form-control" placeholder="Address Line1" name="address_line1" value="">
+                    
+                    
+                    </div>
                     <div class="col-md-6">
                         <label ><h4>Address Line2</h4></label>
-                        <input type="text" class="form-control" placeholder="Address Line2" value="" name="address_line2" ></div>
+                        <input type="text"  id="address_line2" class="form-control" placeholder="Address Line2" value="" name="address_line2" >
+                    
+                    </div>
                 </div>
                 
                 <div class="row mt-3">
                     <div class="col-md-6">
-                        <label ><h4>City</h4></label>
-                        <input type="text" class="form-control" placeholder="City" name="city" value=""></div>
+                        <label for="">City</label>
+                        <input type="text" name="city" onkeyup="city_validation()" id="city" class="form-control" >
+                        <p style="color:red" id="city_name_error"></p>
+                
+                    </div>
                     <div class="col-md-6">
                         <label ><h4>State</h4></label>
-                        <select class="form-control"  name="state">
+                        <select class="form-control" id="state"  name="state">
                             <option>Kerala</option>
                             <option>Tamilnadu</option>
                            
@@ -83,15 +101,14 @@
                     </div>
                     <div class="row mt-2 pl-3">
                         <div class="col-md-6">
-                            <label ><h4>Pin</h4></label>
-                            <input type="text" class="form-control" placeholder="pin" value="" name="pin" ></div>
+                            <label for="">Pin</label>
+                            <input type="text" name="pin" id="pin" onkeyup="pin_validation()"  class="form-control" >
+                            <p style="color:red" id="pin_number_error"></p>
+        
+                        </div>
                     </div>
                 
-                <div class="row mt-2 pl-1">
-                    {% for message in messages %}
-                    <p style="color:red">{{message}}</p>
-                    {% endfor %}
-                </div>
+                
                 
                 <br>
 
@@ -99,11 +116,11 @@
                 </div>
                 <div class="row mt-2 pt-3">
                     <div class="col-md-6">
+                        <p style="color:red" id="address_error"></p>
 
-                    <button class="btn" type="submit" style="background-color: #ff4500;color:white;">Add Address</button>
+                    <button class="btn" id="add_address" style="background-color: #ff4500;color:white;">Add Address</button>
 
                     </div>
-                </form>
 
                     <div class="col-md-6">
 
@@ -113,7 +130,226 @@
         </div>
     </div>
 </div>
-                
+<script>
+    $('#add_address').click(function(){
+
+    var address_name=$('#address_name').val()
+    var first_name=$('#first_name').val()
+    var last_name=$('#last_name').val()
+
+    var email=$('#email').val()
+    var phone_number=$('#phone').val()
+    var address_line1=$('#address_line1').val()
+    var address_line2=$('#address_line2').val()
+    var city=$('#city').val()
+    var state=$('#state').val()
+    var pin=$('#pin').val()
+
+    console.log(address_name,first_name,last_name,email,phone_number,address_line1,address_line2,city,state,pin)
+    pin_validation();
+    city_validation();
+    first_name_validate();
+    last_name_validate();
+    phonevalidation();
+    emailvalidate();
+
+    console.log(email_check,first_name_input,last_name_input,phone_number_input,city_name_check,pin_number_input)
+    if(   email_check == true && first_name_input == true && last_name_input == true && phone_number_input == true && city_name_check == true && pin_number_input == true){
+
+    
+        $.ajax({
+            url:"{% url 'addAddress' %}",
+            method: 'POST',
+            data: {'address_name':address_name,'first_name':first_name,'last_name':last_name,'email':email,'phone_number':phone_number,'address_line1':address_line1,'address_line2':address_line2,'city':city,'pin':pin,'state':state,'csrfmiddlewaretoken': '{{ csrf_token }}'},
+            dataType: 'json',
+            success: function (data,grand_total) {
+  
+              console.log(data)                           
+              
+              if(data.status){
+                alert(data.message)
+                window.location.href = ("{% url 'myAddress' %}");
+
+              }
+              else
+              {
+                alert(data.message)
+
+
+              }
+             
+            },
+            error: function(error){
+              console.log("Ajax cant send data")
+            }
+        })
+    }
+    else{
+    document.getElementById('address_error').innerHTML="Enter Valid Address"
+
+    }          
+      })
+
+
+
+    var email_check=false
+    var first_name_input = false
+    var last_name_input = false
+    var phone_number_input = false
+    var city_name_check = false
+
+    var pin_number_input = false
+
+
+function pin_validation(){
+    var pin_number=document.getElementById('pin').value
+
+    var pin_regex=/^\d{6}$/
+    var name_regex=/^[a-zA-Z ]{1,30}$/;
+
+    var pin_number_check_alphabet=document.getElementById('pin').value
+    lastIndex = pin_number_check_alphabet.length;
+    pin_number_check_alphabet = pin_number_check_alphabet[lastIndex - 1] 
+    console.log(pin_number_check_alphabet)
+
+    if(name_regex.test(pin_number_check_alphabet)){
+
+    document.getElementById('pin_number_error').innerHTML="PIN number only allows digits"
+    pin_number_input=false
+
+    }              
+    else if (pin_regex.test(pin_number)){
+    document.getElementById('pin_number_error').innerHTML=""
+    pin_number_input=true
+
+    }
+
+    else if(pin_number.length<6){
+
+    document.getElementById('pin_number_error').innerHTML="PIN less than 6 is not valid"
+    pin_number_input=false
+
+    }
+
+    else if(pin_number.length>6){
+    document.getElementById('pin_number_error').innerHTML="PIN greater than 6 is not valid"
+    pin_number_input=false
+    }
+    else{
+    document.getElementById('pin_number_error').innerHTML="enter valid PIN number"
+    }
+    }
+    
+function city_validation(){
+
+    var name_regex=/^[a-zA-Z ]{1,30}$/;
+
+    var city_name_from_input =document.getElementById('city').value
+    console.log(city_name_from_input)
+
+    if (name_regex.test(city_name_from_input)){
+        document.getElementById('city_name_error').innerHTML=""
+        city_name_check=true
+
+    }
+    else{
+        document.getElementById('city_name_error').innerHTML="not valid city name"
+        city_name_check=false
+
+    }
+
+    }  
+           
+
+function first_name_validate(){
+
+    var name_regex=/^[a-zA-Z ]{1,30}$/;
+
+    var first_name_from_input =document.getElementById('first_name').value
+    if (name_regex.test(first_name_from_input)){
+        document.getElementById('first_name_error').innerHTML=""
+        first_name_input=true
+
+    }
+    else{
+        document.getElementById('first_name_error').innerHTML="not valid name"
+        first_name_input=false
+
+    }
+
+    }
+
+
+function last_name_validate(){
+    var name_regex=/^[a-zA-Z ]{1,30}$/;
+
+    var last_name_from_input =document.getElementById('last_name').value
+
+    if (name_regex.test(last_name_from_input)){
+        document.getElementById('last_name_error').innerHTML=""
+        last_name_input=true
+
+    }
+    else{
+        document.getElementById('last_name_error').innerHTML="not valid name"
+        last_name_input=false
+    }
+
+    }            
+function phonevalidation(){
+    var phone_number=document.getElementById('phone').value
+    var phone_regex=/^\d{10}$/
+    var phone_name_regex=/^[a-zA-Z ]{1,30}$/;
+    var phone_number_check_alphabet=document.getElementById('phone').value
+    lastIndex = phone_number_check_alphabet.length;
+    phone_number_check_alphabet = phone_number_check_alphabet[lastIndex - 1] 
+
+    if(phone_name_regex.test(phone_number_check_alphabet)){
+
+    document.getElementById('phone_number_error').innerHTML="Phone number only allows digits"
+    phone_number_input=false
+
+    }              
+    else if (phone_regex.test(phone_number)){
+    document.getElementById('phone_number_error').innerHTML=""
+    phone_number_input=true
+
+    }
+
+
+    else if(phone_number.length<10){
+
+    document.getElementById('phone_number_error').innerHTML="Phone number less than 10 is not valid"
+    phone_number_input=false
+
+    }
+    else if(phone_number.length>10){
+    document.getElementById('phone_number_error').innerHTML="Phone number greater than 10 is not valid"
+    phone_number_input=false
+    }
+    else{
+    document.getElementById('phone_number_error').innerHTML="enter valid phone number"
+    }
+    }
+
+function emailvalidate(){
+    var email_val=document.getElementById('email').value
+
+    var email_regex=/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+    if (email_regex.test(email_val)){
+
+        document.getElementById('email_error').innerHTML=""
+        email_check=true
+
+    }
+    else{
+
+        document.getElementById('email_error').innerHTML="invalid mail id"
+        email_check=false
+    }
+    }
+
+    </script>               
 
 
 {% endblock content %}

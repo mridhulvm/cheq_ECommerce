@@ -109,6 +109,11 @@ def minus_cart_ajax(request):
 def add_cart_ajax(request):
 
     product_id=request.GET.get('product_id')
+    if  request.GET.get('product_quantity'):
+        product_quantity_input = int( request.GET.get('product_quantity') )
+    else: 
+        product_quantity_input = 1
+
     print(product_id,"=============product_id")
     total =0
     grand_total=0
@@ -124,13 +129,13 @@ def add_cart_ajax(request):
       
         if CartItem.objects.filter(product=product, user=current_user).exists():
             cart_item = CartItem.objects.get(product=product, user=current_user)
-            cart_item.quantity += 1
+            cart_item.quantity += product_quantity_input #custom quantity updation
             cart_item.save()
             product_quantity = cart_item.quantity # setting quantity
         else:
             cart_item = CartItem.objects.create(
                 product = product,
-                quantity = 1,
+                quantity = product_quantity_input,   #custom quantity updation
                 user = current_user,
             )
             product_quantity = 1   # setting quantity
@@ -173,14 +178,14 @@ def add_cart_ajax(request):
 
         try:
             cart_item = CartItem.objects.get(product=product, cart=cart)
-            cart_item.quantity += 1
+            cart_item.quantity += product_quantity_input      #custom quantity updation
             cart_item.save()
             product_quantity = cart_item.quantity 
 
         except CartItem.DoesNotExist:
             cart_item = CartItem.objects.create(
                 product = product,
-                quantity = 1,
+                quantity = product_quantity_input,     #custom quantity updation
                 cart = cart,
             )
             product_quantity = 1

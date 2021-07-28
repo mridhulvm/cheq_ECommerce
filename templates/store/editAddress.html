@@ -29,16 +29,13 @@
                     </div>
 
                 </div> 
-                <form class="forms-sample"  method="POST" action="{% url 'editAddress' address.id %}">
-    
-                    {% csrf_token %}
-                    {% include 'includes/alerts.html' %}
+              
 
                 <div class="row mt-3">
                     <div class="col-md-12">
 
                     <label ><h4>Address Name</h4></label>
-                    <input type="text" class="form-control"  placeholder="Address Name" name="address_name" value="{{address.address_name}}">
+                    <input type="text" class="form-control"  placeholder="Address Name" id="address_name" name="address_name" value="{{address.address_name}}">
                     <p style="color:red" id="address_name_error"></p>
 
                     </div>
@@ -69,7 +66,7 @@
                     </div>
                     <div class="col-md-6">
                         <label ><h4>Phone Number</h4></label>
-                        <input type="tel" class="form-control" onkeyup="phonevalidation()" id="phone_number" placeholder="Phone Number"  name="phone_number" value="{{address.phone}}">
+                        <input type="tel" class="form-control" onkeyup="phonevalidation()" id="phone" placeholder="Phone Number"  name="phone_number" value="{{address.phone}}">
                         <p style="color:red" id="phone_number_error"></p>
 
                     </div>
@@ -78,22 +75,22 @@
                 <div class="row mt-3">
                     <div class="col-md-6">
                         <label ><h4>Address Line1</h4></label>
-                        <input type="text" class="form-control" placeholder="Address Line1" name="address_line1" value="{{address.address_line1}}"></div>
+                        <input type="text" id="address_line1"  class="form-control" placeholder="Address Line1" name="address_line1" value="{{address.address_line1}}"></div>
                     <div class="col-md-6">
                         <label ><h4>Address Line2</h4></label>
-                        <input type="text" class="form-control" placeholder="Address Line2" name="address_line2"  value="{{address.address_line2}}" ></div>
+                        <input type="text"  id="address_line2"  class="form-control" placeholder="Address Line2" name="address_line2"  value="{{address.address_line2}}" ></div>
                 </div>
                 
                 <div class="row mt-3">
                     <div class="col-md-6">
                         <label ><h4>City</h4></label>
-                        <input type="text" class="form-control"onkeyup="city_validation()" id="city_name" placeholder="City" name="city" value="{{address.city}}">
+                        <input type="text"   id="city" class="form-control"onkeyup="city_validation()" id="city_name" placeholder="City" name="city" value="{{address.city}}">
                         <p style="color:red" id="city_name_error"></p>
 
                     </div>
                     <div class="col-md-6">
                         <label ><h4>State</h4></label>
-                        <select class="form-control" value="{{address.state}}"  name="state">
+                        <select class="form-control" value="{{address.state}}" id="state"   name="state">
                             <option>Kerala</option>
                             <option>Tamilnadu</option>
                            
@@ -103,7 +100,7 @@
                     <div class="row mt-2">
                         <div class="col-md-6">
                             <label ><h4>Pin</h4></label>
-                            <input type="text" class="form-control" onkeyup="pin_validation()" id="pin_number" placeholder="pin" value="{{address.pin}}" name="pin" >
+                            <input type="text"  id="pin"  class="form-control" onkeyup="pin_validation()" id="pin_number" placeholder="pin" value="{{address.pin}}" name="pin" >
                             <p style="color:red" id="pin_number_error"></p>
 
                         </div>
@@ -113,11 +110,11 @@
                 <br>
                 <div class="row mt-2">
                         <div class="col-md-6">
+                            <p style="color:red" id="address_error"></p>
 
-                        <button class="btn" type="submit" style="background-color: #ff4500;color:white;">Save</button>
+                        <button class="btn" id="edit_address"  style="background-color: #ff4500;color:white;">Save</button>
 
                         </div>
-                </form>
                         <div class="col-md-6">
 
                         <a href="{% url 'myAddress' %}"  class="btn " style="background-color: #ff4500;color:white;" >Cancel</a>
@@ -128,22 +125,82 @@
     </div>
 </div>
 <script>
+   $('#edit_address').click(function(){
+
+var address_name=$('#address_name').val()
+var first_name=$('#first_name').val()
+var last_name=$('#last_name').val()
+
+var email=$('#email').val()
+var phone_number=$('#phone').val()
+var address_line1=$('#address_line1').val()
+var address_line2=$('#address_line2').val()
+var city=$('#city').val()
+var state=$('#state').val()
+var pin=$('#pin').val()
+
+console.log(address_name,first_name,last_name,email,phone_number,address_line1,address_line2,city,state,pin)
+pin_validation();
+city_validation();
+first_name_validate();
+last_name_validate();
+phonevalidation();
+emailvalidate();
+
+console.log(email_check,first_name_input,last_name_input,phone_number_input,city_name_check,pin_number_input)
+if(   email_check == true && first_name_input == true && last_name_input == true && phone_number_input == true && city_name_check == true && pin_number_input == true){
+
+
+    $.ajax({
+        url:"{% url 'editAddress' address.id  %}",
+        method: 'POST',
+        data: {'address_name':address_name,'first_name':first_name,'last_name':last_name,'email':email,'phone_number':phone_number,'address_line1':address_line1,'address_line2':address_line2,'city':city,'pin':pin,'state':state,'csrfmiddlewaretoken': '{{ csrf_token }}'},
+        dataType: 'json',
+        success: function (data,grand_total) {
+
+          console.log(data)                           
+          
+          if(data.status){
+            alert(data.message)
+            window.location.href = ("{% url 'myAddress' %}");
+
+          }
+          else
+          {
+            alert(data.message)
+
+
+          }
+         
+        },
+        error: function(error){
+          console.log("Ajax cant send data")
+        }
+    })
+}
+else{
+document.getElementById('address_error').innerHTML="Enter Valid Address"
+
+}          
+  })
+
+
             var email_check=false
             var first_name_input = false
             var last_name_input = false
             var phone_number_input = false
-            var city_name_from_input = false
+            var city_name_check = false
 
             var pin_number_input = false
 
 
 function pin_validation(){
-        var pin_number=document.getElementById('pin_number').value
+        var pin_number=document.getElementById('pin').value
 
         var pin_regex=/^\d{6}$/
         var name_regex=/^[a-zA-Z ]{1,30}$/;
 
-        var pin_number_check_alphabet=document.getElementById('pin_number').value
+        var pin_number_check_alphabet=document.getElementById('pin').value
         lastIndex = pin_number_check_alphabet.length;
         pin_number_check_alphabet = pin_number_check_alphabet[lastIndex - 1] 
         console.log(pin_number_check_alphabet)
@@ -160,14 +217,14 @@ function pin_validation(){
 
         }
 
-        else if(pin_number.length<10){
+        else if(pin_number.length<6){
 
         document.getElementById('pin_number_error').innerHTML="PIN less than 6 is not valid"
         pin_number_input=false
 
         }
 
-        else if(pin_number.length>10){
+        else if(pin_number.length>6){
         document.getElementById('pin_number_error').innerHTML="PIN greater than 6 is not valid"
         pin_number_input=false
         }
@@ -180,15 +237,15 @@ function pin_validation(){
 
         var name_regex=/^[a-zA-Z ]{1,30}$/;
 
-        var city_name_from_input =document.getElementById('city_name').value
+        var city_name_from_input =document.getElementById('city').value
         if (name_regex.test(city_name_from_input)){
             document.getElementById('city_name_error').innerHTML=""
-            city_name_from_input=true
+            city_name_check=true
 
         }
         else{
             document.getElementById('city_name_error').innerHTML="not valid city name"
-            city_name_from_input=false
+            city_name_check=false
 
         }
 
@@ -251,10 +308,10 @@ function pin_validation(){
 
         }            
     function phonevalidation(){
-        var phone_number=document.getElementById('phone_number').value
+        var phone_number=document.getElementById('phone').value
         var phone_regex=/^\d{10}$/
         var phone_name_regex=/^[a-zA-Z ]{1,30}$/;
-        var phone_number_check_alphabet=document.getElementById('phone_number').value
+        var phone_number_check_alphabet=document.getElementById('phone').value
         lastIndex = phone_number_check_alphabet.length;
         phone_number_check_alphabet = phone_number_check_alphabet[lastIndex - 1] 
 

@@ -83,7 +83,7 @@
       <div class="col-lg-6 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Bar chart</h4>
+            <h4 class="card-title">Sales on {{year}}</h4>
             <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
           </div>
         </div>
@@ -104,11 +104,11 @@
       
       Plotly.newPlot("myPlot", data, layout);
       </script>
-
+<!----===============================Bar chart==============-->
    <script>
-   var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
-   var yValues = [55, 49, 44, 24, 15];
-   var barColors = ["red", "green","blue","orange","brown"];
+   var xValues = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov','Dec'];
+   var yValues = [ '{{ month.0 }}','{{month.1 }}','{{month.2 }}','{{month.3 }}','{{month.4 }}','{{month.5 }}','{{month.6 }}','{{month.7 }}','{{month.8 }}','{{month.9 }}','{{month.10 }}','{{month.11 }}' ];
+   var barColors = ["red", "green","blue","orange","brown","red", "green","blue","orange","brown","red"];
    
    new Chart("myChart", {
      type: "bar",
@@ -123,7 +123,7 @@
        legend: {display: false},
        title: {
          display: true,
-         text: "World Wine Production 2018"
+         text: ""
        }
      }
    });

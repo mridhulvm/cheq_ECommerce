@@ -161,7 +161,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="box-2">
-                            <div style="max-width: 100%;" class="result2"></div>
+                            <div class="result2"></div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -189,7 +189,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="box-2">
-                            <div style="width:10em;height: 100%" class="result3"></div>
+                            <div  class="result3"></div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -216,7 +216,7 @@
                </div>
                <div class="modal-body">
                    <div class="box-2">
-                       <div style="width:10em;height: 100%" class="result4"></div>
+                       <div  class="result4"></div>
                    </div>
                </div>
                <div class="modal-footer">
@@ -512,6 +512,17 @@
     });
   </script>
 
+<script>
+   $("#id_product_name").keyup(function(){
+    console.log("function working")
+  
+          var Text = $(this).val();
+          Text = Text.toLowerCase();
+          Text = Text.replace(/[^a-zA-Z0-9]+/g,'-');
+          $("#id_slug").val(Text);    
+          console.log(Text)    
+  });
+  </script>
 
  
 

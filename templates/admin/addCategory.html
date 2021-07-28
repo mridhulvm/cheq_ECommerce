@@ -2,6 +2,8 @@
 {% load static %}
 {% block content %}
 {% include 'includes/alerts.html' %}
+<link href="{% static 'admin/crop/cropper.min.css' %}" rel="stylesheet" type="text/css"/>
+
  <div class="col-7 grid-margin stretch-card mx-auto">
     <div class="card">
       <div class="card-body">
@@ -175,6 +177,18 @@
      
       
   });
+</script>
+
+<script>
+ $("#id_category_name").keyup(function(){
+  console.log("function working")
+
+        var Text = $(this).val();
+        Text = Text.toLowerCase();
+        Text = Text.replace(/[^a-zA-Z0-9]+/g,'-');
+        $("#id_slug").val(Text);    
+        console.log(Text)    
+});
 </script>
 
 {% endblock content %}

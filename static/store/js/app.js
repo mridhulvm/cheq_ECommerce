@@ -453,10 +453,10 @@
       if ($productDetailElement.length && $productDetailElementThumbnail.length) {
 
           var ELEVATE_ZOOM_OBJ = {
-              borderSize: 1,
+              borderSize: 3,
               autoWidth:true,
-              zoomWindowWidth: 540,
-              zoomWindowHeight: 540,
+              zoomWindowWidth: 450,
+              zoomWindowHeight: 450,
               zoomWindowOffetx: 10,
               borderColour: '#e9e9e9',
               cursor: 'pointer'
@@ -475,6 +475,7 @@
               fade: true,
               asNavFor: $productDetailElementThumbnail
           });
+          
           // Init elevate zoom plugin to the first image
           $('#pd-o-initiate .slick-current img').elevateZoom(ELEVATE_ZOOM_OBJ);
 

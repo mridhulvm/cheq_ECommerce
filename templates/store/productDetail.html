@@ -4,8 +4,9 @@
 {% extends 'store/base.html' %}
 {% load static %}
 {% block content %}
+<script src="{% static 'store/zoom_js/zoomthree.js'%}"></script>
+<script src="{% static 'store/zoom_js/main.js' %}"></script>
 
-        <!--====== App Content ======-->
         <div class="app-content">
 
             <!--====== Section 1 ======-->
@@ -32,53 +33,35 @@
                                 </ul>
                             </div>
                             <!--====== End - Product Breadcrumb ======-->
-
-
+                          
                             <!--====== Product Detail Zoom ======-->
                             <div class="pd u-s-m-b-30">
-                                <div class="slider-fouc pd-wrap">
-                                    <div id="pd-o-initiate">
-                                        <div class="pd-o-img-wrap" data-src="{{ product.image1.url }}">
 
-                                            <img class="u-img-fluid" src="{{ product.image1.url }}" data-zoom-image="{{ product.image1.url }}" alt=""></div>
-                                        <div class="pd-o-img-wrap" data-src="images/product/product-d-2.jpg">
+                                        
+                                        <div class="show" href="{{product.image1.url}}" style="z-index: 1">
+                                            <img src="{{product.image1.url}}" id="show-img" style="margin: 10px; border: solid 1px;">
+                                          </div>
+                                    
+                                     
+                                          <div  class="small-img" >
+                                          
+                                            <div class="small-container">
+                                             <div id="small-img-roll">
+                                               <img src="{{product.image1.url}}" class="show-small-img" alt="">
+                                               <img src="{{product.image2.url}}" class="show-small-img" alt="">
+                                               <img src="{{product.image3.url}}" class="show-small-img" alt="">
+                                               <img src="{{product.image4.url}}" class="show-small-img" alt="">
+                                             </div>
+                                            </div>
+                                           
+                                          </div>
+                                          <link rel="stylesheet" href="{% static 'store/css/zoom1.css' %}">
+                                          <script src="{% static 'store/zoom_js/zoomthree.js'%}"></script>
+                                          <script src="{% static 'store/zoom_js/main.js' %}"></script>	
+                                
 
-                                            <img class="u-img-fluid" src="{{ product.image2.url }}" data-zoom-image="{{ product.image2.url }}" alt=""></div>
-                                        <div class="pd-o-img-wrap" data-src="{{ product.image2.url }}">
-
-                                            <img class="u-img-fluid" src="{{ product.image3.url }}" data-zoom-image="{{ product.image3.url }}" alt=""></div>
-                                        <div class="pd-o-img-wrap" data-src="{{ product.image3.url }}">
-
-                                            <img class="u-img-fluid" src="{{ product.image4.url }}" data-zoom-image="{{ product.image4.url }}" alt=""></div>
-                                        <!-- <div class="pd-o-img-wrap" data-src="images/product/product-d-5.jpg">
-
-                                            <img class="u-img-fluid" src="images/product/product-d-5.jpg" data-zoom-image="images/product/product-d-5.jpg" alt=""></div> -->
-                                    </div>
-
-                                    <span class="pd-text">Click for larger zoom</span>
-                                </div>
-                                <div class="u-s-m-t-15">
-                                    <div class="slider-fouc">
-                                        <div id="pd-o-thumbnail">
-                                            <div>
-
-                                                <img class="u-img-fluid" src="{{ product.image1.url }}" alt=""></div>
-                                            <div>
-
-                                                <img class="u-img-fluid" src="{{ product.image2.url }}" alt=""></div>
-                                            <div>
-
-                                                <img class="u-img-fluid" src="{{ product.image3.url }}" alt=""></div>
-                                            <div>
-
-                                                <img class="u-img-fluid" src="{{ product.image4.url }}" alt=""></div>
-                                            <!-- <div>
-
-                                                <img class="u-img-fluid" src="images/product/product-d-5.jpg" alt=""></div> -->
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
+                               
                             <!--====== End - Product Detail Zoom ======-->
                         </div>
                         <div class="col-lg-7">
@@ -122,15 +105,15 @@
                                 <div class="u-s-m-b-15">
 
                                     <span class="pd-detail__preview-desc"> {{ product.description }}</span></div>
-                                <div class="u-s-m-b-15">
+                                <!-- <div class="u-s-m-b-15">
                                     <div class="pd-detail__inline">
 
                                         <span class="pd-detail__click-wrap"><i class="far fa-heart u-s-m-r-6"></i>
 
                                             <a href="signin.html">Add to Wishlist</a>
 
-                                            <!-- <span class="pd-detail__click-count">(222)</span></span></div> -->
-                                </div>
+                                            <span class="pd-detail__click-count">(222)</span></span></div>
+                                </div> -->
                                 <!-- <div class="u-s-m-b-15">
                                     <div class="pd-detail__inline">
 
@@ -169,7 +152,7 @@
 
                                                     <span class="input-counter__minus fas fa-minus"></span>
 
-                                                    <input class="input-counter__text input-counter--text-primary-style" type="text" value="1" data-min="1" data-max="50">
+                                                    <input class="input-counter__text input-counter--text-primary-style" id="product_quantity" type="text" value="1" data-min="1" data-max="50">
 
                                                     <span class="input-counter__plus fas fa-plus"></span></div>
                                                 <!--====== End - Input Counter ======-->
@@ -209,7 +192,7 @@
                     </div>
                 </div>
             </div>
-
+          
             <!--====== Product Detail Tab ======-->
             <div class="u-s-p-y-90">
                 <div class="container">
@@ -771,11 +754,14 @@
         <script>
             function AddToCart(product_id)
             {
-                console.log(product_id)
+
+                var productQuantity=$('#product_quantity').val()
+
+                console.log(product_id,productQuantity)
                 $.ajax({
                 url:"{% url 'add_cart_ajax'  %}",
                 method: 'GET',
-                data: {'product_id':product_id},
+                data: {'product_id':product_id,'product_quantity':productQuantity},
                 dataType: 'json',
                 success: function (data) {
     
@@ -800,5 +786,5 @@
             }
         </script>
 
-  
+ 
 {% endblock content %}

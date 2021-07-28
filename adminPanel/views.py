@@ -16,6 +16,7 @@ from product.models import Product,ProductOffer
 from orders.models import Order,Payment,OrderProduct
 from referral.models import ReferralControl,Referral,ReferralUsers
 
+from datetime import date
 
 from .forms import *
 
@@ -72,8 +73,22 @@ def adminhome(request):
         paypal_orders =Payment.objects.filter(payment_method='PayPal').aggregate(paypal_orders=Sum('amount_paid'))['paypal_orders']
         cod_orders =Payment.objects.filter(payment_method='COD').aggregate(cod_orders=Sum('amount_paid'))['cod_orders']
         razorpay_orders =Payment.objects.filter(payment_method='Razorpay').aggregate(razorpay_orders=Sum('amount_paid'))['razorpay_orders']
-
-
+        today = date.today()
+        year = today.strftime("%Y")
+        print("year==============================",year)
+        month= []
+        month.append( Payment.objects.filter(created_at__year=year, created_at__month='1').count())
+        month.append( Payment.objects.filter(created_at__year=year, created_at__month='2').count())
+        month.append( Payment.objects.filter(created_at__year=year, created_at__month='3').count())
+        month.append( Payment.objects.filter(created_at__year=year, created_at__month='4').count())
+        month.append( Payment.objects.filter(created_at__year=year, created_at__month='5').count())
+        month.append( Payment.objects.filter(created_at__year=year, created_at__month='6').count())
+        month.append(  Payment.objects.filter(created_at__year=year, created_at__month='7').count())
+        month.append(  Payment.objects.filter(created_at__year=year, created_at__month='8').count())
+        month.append( Payment.objects.filter(created_at__year=year, created_at__month='9').count())
+        month.append( Payment.objects.filter(created_at__year=year, created_at__month='10').count())
+        month.append( Payment.objects.filter(created_at__year=year, created_at__month='11').count())
+        print("months============",month)
         # stock=0
         # for product in products:
         #     stock +=product.price*product.stock
@@ -87,6 +102,8 @@ def adminhome(request):
 
         print("revenue---------------------------",revenue,sales)
         context = {
+            "year":year,
+            "month":month,
             "completed_order":completed_order,
             "revenue":revenue,
             "sales":sales,
@@ -96,7 +113,8 @@ def adminhome(request):
             'razorpay_orders':razorpay_orders,
         }
         return render(request, 'admin/index.html', context)
-#------------------------------------------------------------------SALES REPORT  
+
+#============================================================SALES REPORT============================
 
 def salesReport(request):
     orders=Order.objects.filter(is_ordered=True)
@@ -110,42 +128,39 @@ def datewiseReport(request):
         start_date=request.GET.get('start')
         end_date=request.GET.get('end')
         orders=Order.objects.filter(is_ordered=True,updated_at__range=[start_date,end_date])
-
+        context ={
+        "orders":orders,
+        }
+        return render(request, 'admin/salesReport.html', context)
+            
     else:   
-        orders=Order.objects.filter(is_ordered=True)
-    context ={
-    "orders":orders,
-    }
-    return render(request, 'admin/salesReport.html', context)
-
+        return redirect('salesReport')
 def monthlyReport(request):
-    if request.GET.get('month') and request.GET.get('year'):
-        month=request.GET.get('month')
-        year=request.GET.get('year')
-        print(month,year)
-        orders=Order.objects.filter(is_ordered=True)
+    if request.method== 'GET':
+        month=int(request.GET.get('month'))
+        year = int( request.GET.get('year'))
+        print(month,year,"=================month====year====")
+        orders=Order.objects.filter(is_ordered=True,updated_at__month=month,updated_at__year=year)
+        context ={
+        "orders":orders,
+        }
+        return render(request, 'admin/salesReport.html', context)
 
     else:   
-        orders=Order.objects.filter(is_ordered=True)    
-    context ={
-    "orders":orders,
-    }
-    return render(request, 'admin/salesReport.html', context)
+       return redirect('salesReport')
 
 def yearlyReport(request):
-    if request.GET.get('year'):
+    if request.method== 'GET':
         year=request.GET.get('year')
-        print(year)
-        orders=Order.objects.filter(is_ordered=True,updated_at__year=[year])
+        orders=Order.objects.filter(is_ordered=True,updated_at__year=year)
+        context ={
+        "orders":orders,
+        }
+        return render(request, 'admin/salesReport.html', context)
 
     else:   
-        orders=Order.objects.filter(is_ordered=True)    
-    context ={
-    "orders":orders,
-    }
-    return render(request, 'admin/salesReport.html', context)
-
-
+        print("else======")
+        return redirect('salesReport')
 
 # -----------------------------------------------------------------CATEGORY
 
@@ -757,7 +772,7 @@ def deleteCategoryOffer(request,id):
         category = Category.objects.get(id = Category_offer_instance.category.id)
         category.offer = None
 
-        product_instances=Product.objects.filter(category=Category_offer_instance.id)
+        product_instances=Product.objects.filter(category=category)
         for product_instance in product_instances:
             if product_instance.offer_percentage == None:
                  pass

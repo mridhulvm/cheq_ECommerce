@@ -501,7 +501,17 @@
     });
   </script>
 
-
+<script>
+   $("#id_product_name").keyup(function(){
+    console.log("function working")
+  
+          var Text = $(this).val();
+          Text = Text.toLowerCase();
+          Text = Text.replace(/[^a-zA-Z0-9]+/g,'-');
+          $("#id_slug").val(Text);    
+          console.log(Text)    
+  });
+  </script>
  
 
 

@@ -166,10 +166,10 @@
                                                 <li>
                                                     <a data-modal="modal"  onclick="AddToCart('{{product.id}}')" data-tooltip="tooltip" data-placement="top" title="Add to Cart"><i class="fas fa-shopping-cart"></i></a>
                                                 </li>
-                                                <li>
+                                                <!-- <li>
 
                                                     <a href="" data-tooltip="tooltip" data-placement="top" title="Add to Favorites"><i class="fas fa-heart"></i></a>
-                                                </li>
+                                                </li> -->
                                                 <!-- <li>
 
                                                     <a href="" data-tooltip="tooltip" data-placement="top" title="Email me When the price drops"><i class="fas fa-envelope"></i></a>
@@ -226,7 +226,6 @@
             if(data.status){         
 
                 $('#cart_count').html(data.cart_count) ;
-                alert(data.message) ;   
                            
             }else{
 

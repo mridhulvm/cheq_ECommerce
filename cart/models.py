@@ -38,8 +38,8 @@ class CartItem(models.Model):
         today = date.today()
         today1 = today.strftime("%Y-%m-%d")
 
-        if ProductOffer.objects.filter(product = self.product.id).exists():
-            offer = ProductOffer.objects.get(product = self.product.id)
+        if ProductOffer.objects.filter(product = self.product).exists():
+            offer = ProductOffer.objects.get(product = self.product)
             
             if str(offer.offer_end)<= today1:
                 print("Product offer false")
@@ -49,8 +49,8 @@ class CartItem(models.Model):
                 print("Product offer true")
                 return self.product.offer_price * self.quantity
 
-        if CategoryOffer.objects.filter(id = self.product.category.id).exists():
-            offer = CategoryOffer.objects.get(id = self.product.category.id)
+        if CategoryOffer.objects.filter(category = self.product.category).exists():
+            offer = CategoryOffer.objects.get(category = self.product.category)
             if str(offer.offer_end)<= today1:
                 print("Category offer true")
                 return self.product.price * self.quantity
@@ -66,8 +66,8 @@ class CartItem(models.Model):
         today = date.today()
         today1 = today.strftime("%Y-%m-%d")
 
-        if ProductOffer.objects.filter(product = self.product.id).exists():
-            offer = ProductOffer.objects.get(product = self.product.id)
+        if ProductOffer.objects.filter(product = self.product).exists():
+            offer = ProductOffer.objects.get(product = self.product)
             
             if str(offer.offer_end)<= today1:
                 print("Product offer false")

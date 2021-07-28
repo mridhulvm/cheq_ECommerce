@@ -16,31 +16,36 @@
       <div class="card-body">
         <div id="reportrange" style="background:#12151e; cursor: pointer; padding: 5px 10px; border: 1px solid #12151e; width: 100%">
             <div class="row"><!---start row-->
+              {% if orders %}
                 <input class="btn  badge-pill badge-success my-auto" type="button" id="btnExport" value="Export to PDF" onclick="Export()"  style="height: 50%;">
                 <button class="btn  badge-pill badge-success my-auto" onclick="ExportToExcel('xlsx')"style="height: 50%;">Export to excel</button>
-                  
+              {% else %} 
+              <p class="my-auto" style="color:red">Table empty to Export</p>
+              {% endif %}
         
               <!-- <i class="fa fa-calendar"></i>&nbsp;
               <span></span> <i class="fa fa-caret-down"></i> -->
 
-                <form action="{% url 'datewiseReport'%}" method="GET" style="padding-left: 5%;" >
+                <form action="{% url 'datewiseReport'%}" method="GET" style="padding-left: 5%;" onsubmit=" return dateValidation()" >
                         <label for="example-date-input" class="">Sort By Date</label>
-                        <input class="form-control" name="start" id="date-start" type="date" value="" autocomplete="off" style="width: 150px;" >
-                        <input class="form-control" name="end" id="date-end" type="date" value="" autocomplete="off" style="width: 150px;" >
+                        <input class="form-control" name="start" id="date_start" type="date" value="" autocomplete="off" style="width: 150px;" >
+                        <input class="form-control" name="end" id="date_end" type="date" value="" autocomplete="off" style="width: 150px;" >
                         <button type="submit" class="btn btn-sm btn-success" >CheQ</button>
                 </form>
 
-                <form action="{% url 'monthlyReport' %}" method="POST" style="padding-left: 5%;">{% csrf_token %}
+                <form action="{% url 'monthlyReport' %}" method="GET" style="padding-left: 5%;" onsubmit="return monthValidation()">
                         <label for="example-month-input" class="">Monthly</label>
-                        <input class="form-control" type="date" name="month" value="" id="example-month-input"  style="width: 150px;">
-                        <button type="submit" class="btn btn-sm btn-primary">CheQ</button>
+                        <input class="form-control" id="month_month" type="integer"maxlength="2" name="month" placeholder="MM"/>
+                        <input class="form-control" id="month_year" type="integer" maxlength="4" name="year"  placeholder="YY"/>
+
+                        <button type="submit" class="btn btn-sm btn-success">CheQ</button>
                 
                 </form>
 
-                <form action="{% url 'yearlyReport' %}" method="GET" style="padding-left: 5%;padding-right: 5%;" >
+                <form action="{% url 'yearlyReport' %}" method="GET" style="padding-left: 5%;padding-right: 5%;" onsubmit="return yearValidation()" >
                         <label for="" class="">Yearly</label>
-                        <input type="date" id="datepicker" name="year" value="" class="form-control datepicker"  style="width: 150px;">
-                        <button type="submit" class="btn btn-sm btn-primary">CheQ</button>
+                        <input class="form-control" id="year_year" type="integer" maxlength="4" name="year"  placeholder="YY"/>
+                        <button type="submit" class="btn btn-sm btn-success">CheQ</button>
                 
                 </form>
 
@@ -143,16 +148,38 @@ function ExportToExcel(type, fn, dl) {
       XLSX.writeFile(wb, fn || ('MySheetName.' + (type || 'xlsx')));
  }
  </script>
- <!--------------------------------set year-->
 <script>
-$(function() {
-    $( "#datepicker" ).datepicker({dateFormat: 'yy'});
-});​
+
+  function dateValidation(){
+    var date_start=$('#date_start').val()
+    var date_end=$('#date_end').val()
+    if (date_end == "" || date_start == ""){
+    return false
+    }
+    else{
+      return true
+    }
+  }
+  function monthValidation(){
+    var month_month=$('#month_month').val()
+    var month_year=$('#month_year').val()
+    if (month_month == "" || month_year == ""){
+    return false
+    }
+    else{
+      return true
+    } 
+  }
+  function yearValidation(){
+    var year_year=$('#year_year').val()
+    if (year_year == "" ){
+    return false
+    }
+    else{
+      return true
+    }
+
+  }
 </script>
-<style>
-    .ui-datepicker-calendar {
-   display: none;
-}
-</style>
 
 {% endblock content %}

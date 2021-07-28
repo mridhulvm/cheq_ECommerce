@@ -441,11 +441,11 @@ def addAddress(request):
         address.city=request.POST.get('city')
         address.state=request.POST.get('state')
         if UserAddress.objects.filter(user=request.user,address_name = address.address_name).exists():
-            messages.error(request,"change address name") 
-            return redirect(request.META['HTTP_REFERER'])
+            return JsonResponse({'status':False,'message':"Address name already exists"})
+
         
         address.save()
-        return redirect('myAddress')
+        return JsonResponse({'status':True,'message':"Address Saved"})
     return render (request,'store/addAddress.html')
 
 @login_required(login_url='login')
@@ -467,12 +467,11 @@ def editAddress(request,id):
         if UserAddress.objects.filter(user=request.user,address_name = address.address_name).exists():
             same_address = UserAddress.objects.get(user=request.user,address_name = address.address_name)
             if same_address.id != id: 
-                messages.error(request,"change address name") 
-                return redirect(request.META['HTTP_REFERER'])
+                return JsonResponse({'status':False,'message':"Address name already exists"})
 
     
         address.save()
-        return redirect('myAddress')        
+        return JsonResponse({'status':True,'message':"Address Updated"})
 
     else:
         if UserAddress.objects.filter(user=request.user,id=id).exists():
@@ -491,7 +490,7 @@ def editAddress(request,id):
 @login_required(login_url='login')    
 @never_cache
 def myOrders(request):
-    ordered_products = OrderProduct.objects.filter(user=request.user)
+    ordered_products = OrderProduct.objects.filter(user=request.user).order_by('-created_at')
     context = {
     "ordered_products" : ordered_products
     }

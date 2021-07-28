@@ -1,6 +1,25 @@
 {% extends 'store/base.html' %}
 {% load static %}
 {% block content %}
+    <!--====== Section Content ======-->
+    <div class="section__content">
+        <div class="container">
+            <div class="breadcrumb">
+                <div class="breadcrumb__wrap">
+                    <ul class="breadcrumb__list">
+                        <li class="has-separator">
+
+                            <a >Home</a></li>
+                        <li class="is-marked">
+
+                            <a href="">Order COnfirm</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--====== End - Section 1 ======-->
 <input class="btn  badge-pill badge-success" type="button" id="btnExport" value="Download PDF" onclick="Export()"  style="height: 50%;">
 <a href="{% url 'home' %}" class="btn btn-light badge-pill" style="background: #ff4500;height: 50%;">Continue Shopping</a>
   

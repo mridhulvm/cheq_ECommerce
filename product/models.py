@@ -46,8 +46,8 @@ class Product(models.Model):
         today = date.today()
         today1 = today.strftime("%Y-%m-%d")
 
-        if ProductOffer.objects.filter(product = self.id).exists():
-            offer = ProductOffer.objects.get(product = self.id)
+        if ProductOffer.objects.filter(product = self).exists():
+            offer = ProductOffer.objects.get(product = self)
             # print(str(offer.offer_end)>=today1)
             # return str(offer.offer_end)>=today1
             if str(offer.offer_end)<= today1:
@@ -58,8 +58,8 @@ class Product(models.Model):
                 print(" in product Product offer true")
                 return True 
 
-        if CategoryOffer.objects.filter(id = self.category.id).exists():
-            offer = CategoryOffer.objects.get(id = self.category.id)
+        if CategoryOffer.objects.filter(category = self.category.id).exists():
+            offer = CategoryOffer.objects.get(category = self.category.id)
             if str(offer.offer_end)<= today1:
                 print(" in product Category offer true")
                 return False
